@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AndroidWebServer</string>
+
+    <string name="back_to_homepage">返回首页</string>
+    <string name="message">新的网络名称为%1$s,密码：%2$s</string>
+    <string name="summary">热点设置成功，请重新连接热点。</string>
+    <string name="error">操作出错，请重试</string>
+    <string name="success">设置成功</string>
+    <string name="adminpw">管理员密码</string>
+    <string name="login">登录</string>
+    <string name="alert">密码不能为空！</string>
+    <string name="error_pwd">管理员名称与密码不匹配！</string>
+    <string name="permission_deny">未登录，或登录超时</string>
+    <string name="modify_pwd_success">密码修改成功，请重新登录</string>
+    <string name="admin">Admin</string>
+    <string name="log_out">已成功退出</string>
+    <string name="error_input">输入有误</string>
+    <string name="success_setting">设置成功</string>
+    <string name="failed_setting">设置失败</string>
+    <string name="block">阻断</string>
+    <string name="unblock">解封</string>
+    <string name="posttask">请求已提交，热点将会重启，待重新连接热点后，查看设置情况。</string>
+    <string name="check_invilidate">无效的网络数据，请检查网络。</string>
+
+    <string name="newest_version">当前为最新版本</string>
+    <string name="latest_check_time">上次检查日期为</string>
+    <string name="check_for_updates">检测更新</string>
+    <string name="found_new_version">检测到新版本</string>
+    <string name="download">下载更新</string>
+    <string name="downloading">正在下载</string>
+    <string name="download_success">已下载新的更新</string>
+    <string name="upgrade">固件升级</string>
+    <string name="upgrading">固件升级中...</string>
+    <string name="comfirm">确定要升级到版本%1$s吗？</string>
+    <string name="fota_not_exit">产品不存在</string>
+    <string name="fota_not_config">此版本未在  FOTA 服务器上进行配置</string>
+    <string name="check_success">发现新版本</string>
+    <string name="fota_versionname">版本名称</string>
+    <string name="fota_publish">发布日期</string>
+    <string name="fota_content">更新内容</string>
+    <string name="fota_filesize">文件大小</string>
+    <string name="no_sd_card">未检测到SD卡</string>
+    <string name="download_error">下载出错，错误代码:</string>
+    <string name="unknown">未知</string>
+    <string name="json_sucess">json success</string>
+    <string name="json_error">json_error</string>
+    <string name="json_error_param">json_error_param</string>
+    <string name="json_unknown">json_unknown</string>
+</resources>
