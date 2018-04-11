@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import lynn.andr.webserver.R;
+import lynn.andr.webserver.http.Utils.ParamUtil;
+import lynn.andr.webserver.http.Utils.ResponseWapper;
 import lynn.andr.webserver.util.Log;
 
 
@@ -32,19 +34,18 @@ public class BlockMacHandler extends RequestHandler {
 	@Override
 	public void handle(HttpRequest request, HttpResponse response,
 			HttpContext context) throws HttpException, IOException {
-		super.handle(request, response, context);
-
-		if (!checkPermission(request, response)) {
-//			responeMessage(response, R.string.permission_deny);
-			responeLogin(response);
-			return;
-		}
+//
+//		if (!checkAndUpdateCookie(request, response)) {
+////			responeMessage(response, R.string.permission_deny);
+//			responeLogin(response);
+//			return;
+//		}
 
 		String target = request.getRequestLine().getUri();
 		String mac = getMac(request);
 
 		if (target == null || target.isEmpty() || mac == null || mac.isEmpty()) {
-			responeMessage(response, R.string.error);
+			ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error), response);
 			return;
 		}
 		boolean result=false; 
@@ -58,15 +59,16 @@ public class BlockMacHandler extends RequestHandler {
 		if(result){
 			response.setStatusCode(HttpStatus.SC_OK);
 			response.setEntity(mPageEntity.getIndexPage());
+			ResponseWapper.wapper(new PageEntity(mContext).getIndexPage(), response);
 		}else {
-			responeMessage(response, R.string.error);
+			ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error), response);
 			return;
 		}
 
 	}
 
 	public static String getMac(HttpRequest request) throws IOException{
-		Map<String, String> parameter = parseParameter(request);
+		Map<String, String> parameter = ParamUtil.parseParameter(request);
 		Log.i(TAG, " parameter=" + parameter);
 		if (parameter == null){
 			Log.i(TAG, " parameter=" + parameter);

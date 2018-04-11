@@ -31,7 +31,6 @@ public class NetUtil {
 
     private static final String TAG = "NetUtil";
 
-    public static final String COOKIE_TIMEOUT = "600";// cookie timeout for XX seconds
 
 
     private static final String WIFI_AP_MAX_LIMIT = "wifi_ap_max_limit";

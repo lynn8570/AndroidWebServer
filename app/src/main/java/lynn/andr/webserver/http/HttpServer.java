@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import lynn.andr.webserver.SocketService;
 import lynn.andr.webserver.util.Log;
@@ -37,10 +38,31 @@ import lynn.andr.webserver.util.NetUtil;
 public class HttpServer {
 
     private static final String TAG = "HttpServer";
+    /**
+     * target url that need user login
+     */
+    public static final ArrayList<String> restrictTarget = new ArrayList<>();
+    public static final ArrayList<String> unRestrictTarget = new ArrayList<>();
+    static {
 
+        restrictTarget.add("/submit");
+        restrictTarget.add("/changepwd");
+        restrictTarget.add("/settotal");
+        restrictTarget.add("/block");
+        restrictTarget.add("/unblock");
+
+
+        unRestrictTarget.add("/");
+        unRestrictTarget.add("/login");
+        unRestrictTarget.add("/submit");
+        unRestrictTarget.add("/logout");
+        unRestrictTarget.add("/lang");
+        unRestrictTarget.add("/logout");
+        unRestrictTarget.add("/chgmax");
+    }
 
     public void startServer(int port, Context context, SocketService.OnHttpServerStartListener listener) throws Exception {
-        Thread t = new RequestListenerThread(port, context,listener);
+        Thread t = new RequestListenerThread(port, context, listener);
         t.setDaemon(false);
         t.start();
 
@@ -57,7 +79,7 @@ public class HttpServer {
                 throws IOException {
 
             this.serversocket = new ServerSocket(port);
-            this.listener=listener;
+            this.listener = listener;
 
             HttpProcessor httpproc = new ImmutableHttpProcessor(
                     new HttpResponseInterceptor[]{new ResponseDate(),
@@ -81,41 +103,39 @@ public class HttpServer {
                             "HttpComponents/1.1");
 
             HttpRequestHandlerRegistry reqistry = new HttpRequestHandlerRegistry();
-            LoginHandler loginHandler = new LoginHandler(context);
-            ChangePwdHandler changePwdHandler = new ChangePwdHandler(context);
-            SubmitHandler submitHandler = new SubmitHandler(context);
-            SetTotalHandler setTotalHandler = new SetTotalHandler(context);
-            BlockMacHandler blockMacHandler = new BlockMacHandler(context);
-            WebServiceHandler webServiceHandler = new WebServiceHandler(context);
-            ImagesHandler imagesHandler = new ImagesHandler(context);
-            JSONHandler jsonHandler = new JSONHandler(context);
-            reqistry.register("/login", loginHandler);
-            reqistry.register("/login.json", loginHandler);
-            reqistry.register("/submit", submitHandler);
-            reqistry.register("/changepwd", changePwdHandler);
-            reqistry.register("/changepwd.json", changePwdHandler);
-            reqistry.register("/settotal", setTotalHandler);
-            reqistry.register("/block", blockMacHandler);
-            reqistry.register("/unblock", blockMacHandler);
 
-            MifiPushTest mifipushtest = new MifiPushTest(context);
-            reqistry.register("/live/*", mifipushtest);
+            //all target register to WebServiceHandler
+            WebServiceHandler webServiceHandler = new WebServiceHandler(context);
+            for(int i=0;i<unRestrictTarget.size();i++){
+                reqistry.register(unRestrictTarget.get(i),webServiceHandler);
+            }
+            for(int i=0;i<restrictTarget.size();i++){
+                reqistry.register(restrictTarget.get(i),webServiceHandler);
+            }
+
+
+            JSONHandler jsonHandler = new JSONHandler(context);
+//            reqistry.register("/login", loginHandler);
+//            reqistry.register("/login.json", loginHandler);
+//            reqistry.register("/submit", submitHandler);
+//            reqistry.register("/changepwd", changePwdHandler);
+//            reqistry.register("/changepwd.json", changePwdHandler);
+//            reqistry.register("/settotal", setTotalHandler);
+//            reqistry.register("/block", blockMacHandler);
+//            reqistry.register("/unblock", blockMacHandler);
+//
+//            MifiPushTest mifipushtest = new MifiPushTest(context);
+//            reqistry.register("/live/*", mifipushtest);
 
             reqistry.register("/json/*", jsonHandler);
             reqistry.register("*" + ".json", jsonHandler);
 
-            reqistry.register("/images/*", imagesHandler);
-            reqistry.register("/css/*", imagesHandler);
-            reqistry.register("/js/*", imagesHandler);
-            reqistry.register("/logout", webServiceHandler);
-            reqistry.register("/lang", webServiceHandler);
-            reqistry.register("/chgmax", webServiceHandler);
-
-
-            reqistry.register("/updateWare.html", webServiceHandler);
-            reqistry.register("/index.html", webServiceHandler);
-            reqistry.register("/login.html", webServiceHandler);
-            reqistry.register("/", webServiceHandler);
+            //all .html、images，css,js  register to AssetsHandler
+            AssetsHandler assetsHandler = new AssetsHandler(context);
+            reqistry.register("*" + ".html", assetsHandler);
+            reqistry.register("/images/*", assetsHandler);
+            reqistry.register("/css/*", assetsHandler);
+            reqistry.register("/js/*", assetsHandler);
 
             this.httpService = new HttpService(httpproc,
                     new DefaultConnectionReuseStrategy(),
@@ -133,7 +153,7 @@ public class HttpServer {
                     "RequestListenerThread start listen port="
                             + NetUtil.getLocalHostIp());
             //SocketService.mStrHostIp = NetUtil.getLocalHostIp();
-            if (listener!=null){
+            if (listener != null) {
                 listener.onHttpServerStart(NetUtil.getLocalHostIp());
             }
 
