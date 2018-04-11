@@ -288,7 +288,7 @@ public class JSONHandler extends RequestHandler {
 	}
 
 	private void handleDataUsage(HttpRequest request, HttpResponse response) {
-		DataUsage dataUsage = NetUtil.getDataUsage(mContext);
+		DataUsage dataUsage = SettingUtil.getDataUsage(mContext);
 		Log.i(TAG, "dataUsage=" + dataUsage);
 		if (dataUsage != null) {
 			StringEntity stringEntity = JSONEntity.getDataUasage(dataUsage);

@@ -1,40 +1,53 @@
 package lynn.andr.webserver;
 
 
-
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 
 import lynn.andr.webserver.http.HttpServer;
-import lynn.andr.webserver.util.Log;
+
 
 public class SocketService extends Service {
 
-	public static final int PORT = 8080;
-	public static String hostip;
-	
-	private static final String ACTION_F2_DOWN="com.zowee.action.F2_DOWN";
+    public static final int PORT = 8080;
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		return null;
-	}
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		Log.i("SocketService", "onCreate");
-		
-		
-		HttpServer hs = new HttpServer();
+    @Override
+    public IBinder onBind(Intent intent) {
 
-		try {
-			hs.startServer(PORT, getBaseContext());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
+        return new SocketServiceBinder();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+    }
+
+
+    public void startHttpServer(OnHttpServerStartListener listener) {
+        HttpServer hs = new HttpServer();
+        try {
+            hs.startServer(PORT, getBaseContext(), listener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public interface OnHttpServerStartListener {
+        void onHttpServerStart(String hostIp);
+    }
+
+    /**
+     * used to communicate with activity, to feedback if the httpserver is started or not
+     */
+    public class SocketServiceBinder extends Binder {
+        public SocketService getService() {
+            return SocketService.this;
+        }
+
+    }
+
 }

@@ -19,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 
 import android.content.Context;
 
+import lynn.andr.webserver.http.Utils.ParamUtil;
 import lynn.andr.webserver.util.Log;
 import lynn.andr.webserver.util.NetUtil;
 
@@ -139,7 +140,7 @@ public class RequestHandler implements HttpRequestHandler {
 			//	stringParam = URLDecoder.decode(stringParam);
 			//	Log.i(TAG, "handlePostParam: decodeStr=" +stringParam );
 			//}
-			return NetUtil.getpostParam(stringParam);
+			return ParamUtil.getpostParam(stringParam);
 
 		}
 		return null;
@@ -147,7 +148,7 @@ public class RequestHandler implements HttpRequestHandler {
 
 	private static Map<String, String> handleGetParam(HttpRequest request) {
 		String target = request.getRequestLine().getUri();
-		return NetUtil.getParam(target);
+		return ParamUtil.getParam(target);
 	}
 	
 	protected void responeLogin(HttpResponse response) throws IOException{

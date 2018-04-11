@@ -13,6 +13,7 @@ import java.util.Map;
 import lynn.andr.webserver.R;
 import lynn.andr.webserver.util.Log;
 import lynn.andr.webserver.util.NetUtil;
+import lynn.andr.webserver.util.SettingUtil;
 
 
 public class SetTotalHandler extends RequestHandler {
@@ -53,19 +54,19 @@ public class SetTotalHandler extends RequestHandler {
 			integerTotal = Integer.parseInt(total);
 			if(integerTotal>0){
 				Log.i(TAG, "setDataUsageTotal longTotal="+integerTotal);
-				NetUtil.setDataUsageTotal(mContext, integerTotal*1024);
+				SettingUtil.setDataUsageTotal(mContext, integerTotal*1024);
 			}
 			
 			integerLimitType = Integer.parseInt(limittype);
 			if(integerLimitType>0&&integerLimitType<4){
 				Log.i(TAG, "setDataUsageTotal limittype="+integerLimitType);
-				NetUtil.setLimitType(mContext,integerLimitType);
+				SettingUtil.setLimitType(mContext,integerLimitType);
 			}
 			
 			integerCali = Integer.parseInt(cali);
 			if(integerCali>=0&&integerCali<=7){
 				Log.i(TAG, "setDataUsageTotal setCali="+integerCali);
-				NetUtil.setCali(mContext,integerCali);
+				SettingUtil.setCali(mContext,integerCali);
 			}
 			
 			responeMessage(response, R.string.success_setting);

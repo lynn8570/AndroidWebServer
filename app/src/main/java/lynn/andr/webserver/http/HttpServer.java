@@ -3,7 +3,6 @@ package lynn.andr.webserver.http;
 import android.content.Context;
 
 
-
 import org.apache.http.ConnectionClosedException;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponseInterceptor;
@@ -37,168 +36,172 @@ import lynn.andr.webserver.util.NetUtil;
 
 public class HttpServer {
 
-	private static final String TAG = "HttpServer";
+    private static final String TAG = "HttpServer";
 
-	public static String ipAddress = ""; // requester ip address
 
-	public void startServer(int port, Context context) throws Exception {
-		Thread t = new RequestListenerThread(port, context);
-		t.setDaemon(false);
-		t.start();
+    public void startServer(int port, Context context, SocketService.OnHttpServerStartListener listener) throws Exception {
+        Thread t = new RequestListenerThread(port, context,listener);
+        t.setDaemon(false);
+        t.start();
 
-	}
+    }
 
-	
-	static class RequestListenerThread extends Thread {
-		private final ServerSocket serversocket;
-		private final HttpParams params; 
-		private final HttpService httpService;
 
-		public RequestListenerThread(int port, Context context)
-				throws IOException {
+    static class RequestListenerThread extends Thread {
+        private final ServerSocket serversocket;
+        private final HttpParams params;
+        private final HttpService httpService;
+        private SocketService.OnHttpServerStartListener listener;
 
-			this.serversocket = new ServerSocket(port);
+        public RequestListenerThread(int port, Context context, SocketService.OnHttpServerStartListener listener)
+                throws IOException {
 
-			HttpProcessor httpproc = new ImmutableHttpProcessor(
-					new HttpResponseInterceptor[] { new ResponseDate(),
-							new ResponseServer(), new ResponseContent(),
-							new ResponseConnControl() });
+            this.serversocket = new ServerSocket(port);
+            this.listener=listener;
 
-			// HttpProcessor httpproc = HttpProcessorBuilder.create()
-			// .add(new RequestContent()).add(new RequestTargetHost())
-			// .add(new RequestConnControl()).add(new RequestUserAgent())
-			// .add(new RequestExpectContinue(true)).build();
+            HttpProcessor httpproc = new ImmutableHttpProcessor(
+                    new HttpResponseInterceptor[]{new ResponseDate(),
+                            new ResponseServer(), new ResponseContent(),
+                            new ResponseConnControl()});
 
-			this.params = new BasicHttpParams();
-			this.params
-					.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 5000)
-					.setIntParameter(CoreConnectionPNames.SOCKET_BUFFER_SIZE,
-							8 * 1024)
-					.setBooleanParameter(
-							CoreConnectionPNames.STALE_CONNECTION_CHECK, false)
-					.setBooleanParameter(CoreConnectionPNames.TCP_NODELAY, true)
-					.setParameter(CoreProtocolPNames.ORIGIN_SERVER,
-							"HttpComponents/1.1");
+            // HttpProcessor httpproc = HttpProcessorBuilder.create()
+            // .add(new RequestContent()).add(new RequestTargetHost())
+            // .add(new RequestConnControl()).add(new RequestUserAgent())
+            // .add(new RequestExpectContinue(true)).build();
 
-			HttpRequestHandlerRegistry reqistry = new HttpRequestHandlerRegistry();
-			LoginHandler loginHandler = new LoginHandler(context);
-			ChangePwdHandler changePwdHandler = new ChangePwdHandler(context);
-			SubmitHandler submitHandler = new SubmitHandler(context);
-			SetTotalHandler setTotalHandler = new SetTotalHandler(context);
-			BlockMacHandler blockMacHandler = new BlockMacHandler(context);
-			WebServiceHandler webServiceHandler = new WebServiceHandler(context);
-			ImagesHandler imagesHandler = new ImagesHandler(context);
-			JSONHandler jsonHandler =new JSONHandler(context);
-			reqistry.register("/login", loginHandler);
-			reqistry.register("/login.json", loginHandler);
-			reqistry.register("/submit", submitHandler);
-			reqistry.register("/changepwd", changePwdHandler);
-			reqistry.register("/changepwd.json", changePwdHandler);
-			reqistry.register("/settotal", setTotalHandler);
-			reqistry.register("/block", blockMacHandler);
-			reqistry.register("/unblock", blockMacHandler);
+            this.params = new BasicHttpParams();
+            this.params
+                    .setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 5000)
+                    .setIntParameter(CoreConnectionPNames.SOCKET_BUFFER_SIZE,
+                            8 * 1024)
+                    .setBooleanParameter(
+                            CoreConnectionPNames.STALE_CONNECTION_CHECK, false)
+                    .setBooleanParameter(CoreConnectionPNames.TCP_NODELAY, true)
+                    .setParameter(CoreProtocolPNames.ORIGIN_SERVER,
+                            "HttpComponents/1.1");
 
-			MifiPushTest mifipushtest = new MifiPushTest(context);
-			reqistry.register("/live/*",mifipushtest);	
-			
-			reqistry.register("/json/*", jsonHandler);
-			reqistry.register("*"+".json", jsonHandler);
-			
-			reqistry.register("/images/*", imagesHandler);
-			reqistry.register("/css/*", imagesHandler);
-			reqistry.register("/js/*", imagesHandler);
-			reqistry.register("/logout", webServiceHandler);
-			reqistry.register("/lang", webServiceHandler);
-			reqistry.register("/chgmax", webServiceHandler);
-			
-			
-			reqistry.register("/updateWare.html", webServiceHandler);
-			reqistry.register("/index.html", webServiceHandler);
-			reqistry.register("/login.html", webServiceHandler);
-			reqistry.register("/", webServiceHandler);
+            HttpRequestHandlerRegistry reqistry = new HttpRequestHandlerRegistry();
+            LoginHandler loginHandler = new LoginHandler(context);
+            ChangePwdHandler changePwdHandler = new ChangePwdHandler(context);
+            SubmitHandler submitHandler = new SubmitHandler(context);
+            SetTotalHandler setTotalHandler = new SetTotalHandler(context);
+            BlockMacHandler blockMacHandler = new BlockMacHandler(context);
+            WebServiceHandler webServiceHandler = new WebServiceHandler(context);
+            ImagesHandler imagesHandler = new ImagesHandler(context);
+            JSONHandler jsonHandler = new JSONHandler(context);
+            reqistry.register("/login", loginHandler);
+            reqistry.register("/login.json", loginHandler);
+            reqistry.register("/submit", submitHandler);
+            reqistry.register("/changepwd", changePwdHandler);
+            reqistry.register("/changepwd.json", changePwdHandler);
+            reqistry.register("/settotal", setTotalHandler);
+            reqistry.register("/block", blockMacHandler);
+            reqistry.register("/unblock", blockMacHandler);
 
-			this.httpService = new HttpService(httpproc,
-					new DefaultConnectionReuseStrategy(),
-					new DefaultHttpResponseFactory());
-			httpService.setParams(this.params);
-			httpService.setHandlerResolver(reqistry);
-			Log.i(TAG, "WebServiceHandler handle set params=" + params);
-		}
+            MifiPushTest mifipushtest = new MifiPushTest(context);
+            reqistry.register("/live/*", mifipushtest);
 
-		@Override
-		public void run() {
-			Log.i(TAG, "RequestListenerThread start listen port="
-					+ this.serversocket.getLocalPort());
-			Log.i(TAG,
-					"RequestListenerThread start listen port="
-							+ NetUtil.getLocalHostIp());
-			SocketService.hostip=NetUtil.getLocalHostIp();
+            reqistry.register("/json/*", jsonHandler);
+            reqistry.register("*" + ".json", jsonHandler);
 
-			Log.i(TAG,
-					"RequestListenerThread start listen Thread.interrupted()="
-							+ Thread.interrupted());
-			while (!Thread.interrupted()) {
-				try {
-					Socket socket = this.serversocket.accept();
-					DefaultHttpServerConnection conn = new DefaultHttpServerConnection();
-					ipAddress = socket.getInetAddress().getHostAddress();
-					Log.i(TAG,
-							"Incoming connection from "
-									+ socket.getInetAddress());
-					conn.bind(socket, this.params);
-					// 开启工作线程
-					Thread t = new WorkerThread(this.httpService, conn);
-					t.setDaemon(true);
-					t.start();
-				} catch (InterruptedIOException ex) {
-					Log.e(TAG, "InterruptedIOException=" + ex);
-					break;
-				} catch (IOException e) {
-					Log.e(TAG,
-							"I/O error initialising connection thread: "
-									+ e.getMessage());
-					break;
-				}
-			}
+            reqistry.register("/images/*", imagesHandler);
+            reqistry.register("/css/*", imagesHandler);
+            reqistry.register("/js/*", imagesHandler);
+            reqistry.register("/logout", webServiceHandler);
+            reqistry.register("/lang", webServiceHandler);
+            reqistry.register("/chgmax", webServiceHandler);
 
-		}
 
-		static class WorkerThread extends Thread {
+            reqistry.register("/updateWare.html", webServiceHandler);
+            reqistry.register("/index.html", webServiceHandler);
+            reqistry.register("/login.html", webServiceHandler);
+            reqistry.register("/", webServiceHandler);
 
-			private final HttpService httpservice;
-			private final HttpServerConnection conn;
+            this.httpService = new HttpService(httpproc,
+                    new DefaultConnectionReuseStrategy(),
+                    new DefaultHttpResponseFactory());
+            httpService.setParams(this.params);
+            httpService.setHandlerResolver(reqistry);
+            Log.i(TAG, "WebServiceHandler handle set params=" + params);
+        }
 
-			public WorkerThread(final HttpService httpservice,
-					final HttpServerConnection conn) {
-				super();
-				this.httpservice = httpservice;
-				this.conn = conn;
-			}
+        @Override
+        public void run() {
+            Log.i(TAG, "RequestListenerThread start listen port="
+                    + this.serversocket.getLocalPort());
+            Log.i(TAG,
+                    "RequestListenerThread start listen port="
+                            + NetUtil.getLocalHostIp());
+            //SocketService.mStrHostIp = NetUtil.getLocalHostIp();
+            if (listener!=null){
+                listener.onHttpServerStart(NetUtil.getLocalHostIp());
+            }
 
-			@Override
-			public void run() {
-				Log.i(TAG, "New WorkerThread thread");
-				HttpContext context = new BasicHttpContext(null);
-				try {
-					while (!Thread.interrupted() && this.conn.isOpen()) {
-						this.httpservice.handleRequest(this.conn, context);
-					}
-				} catch (ConnectionClosedException ex) {
-					Log.e(TAG, "Client closed connection");
-				} catch (IOException ex) {
-					Log.e(TAG, "I/O error: " + ex.getMessage());
-				} catch (HttpException ex) {
-					Log.e(TAG,
-							"Unrecoverable HTTP protocol violation: "
-									+ ex.getMessage());
-				} finally {
-					try {
-						this.conn.shutdown();
-					} catch (IOException ignore) {
-					}
-				}
-			}
-		}
+            Log.i(TAG,
+                    "RequestListenerThread start listen Thread.interrupted()="
+                            + Thread.interrupted());
+            while (!Thread.interrupted()) {
+                try {
+                    Socket socket = this.serversocket.accept();
+                    DefaultHttpServerConnection conn = new DefaultHttpServerConnection();
+                    //ipAddress = socket.getInetAddress().getHostAddress();
+                    Log.i(TAG,
+                            "Incoming connection from "
+                                    + socket.getInetAddress());
+                    conn.bind(socket, this.params);
+                    // 开启工作线程
+                    Thread t = new WorkerThread(this.httpService, conn);
+                    t.setDaemon(true);
+                    t.start();
+                } catch (InterruptedIOException ex) {
+                    Log.e(TAG, "InterruptedIOException=" + ex);
+                    break;
+                } catch (IOException e) {
+                    Log.e(TAG,
+                            "I/O error initialising connection thread: "
+                                    + e.getMessage());
+                    break;
+                }
+            }
 
-	}
+        }
+
+        static class WorkerThread extends Thread {
+
+            private final HttpService httpservice;
+            private final HttpServerConnection conn;
+
+            public WorkerThread(final HttpService httpservice,
+                                final HttpServerConnection conn) {
+                super();
+                this.httpservice = httpservice;
+                this.conn = conn;
+            }
+
+            @Override
+            public void run() {
+                Log.i(TAG, "New WorkerThread thread");
+                HttpContext context = new BasicHttpContext(null);
+                try {
+                    while (!Thread.interrupted() && this.conn.isOpen()) {
+                        this.httpservice.handleRequest(this.conn, context);
+                    }
+                } catch (ConnectionClosedException ex) {
+                    Log.e(TAG, "Client closed connection");
+                } catch (IOException ex) {
+                    Log.e(TAG, "I/O error: " + ex.getMessage());
+                } catch (HttpException ex) {
+                    Log.e(TAG,
+                            "Unrecoverable HTTP protocol violation: "
+                                    + ex.getMessage());
+                } finally {
+                    try {
+                        this.conn.shutdown();
+                    } catch (IOException ignore) {
+                    }
+                }
+            }
+        }
+
+    }
 }

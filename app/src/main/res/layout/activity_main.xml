@@ -17,12 +17,12 @@
     <Button android:text="startHttpServer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button"/>
+        android:id="@+id/btn_start"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/hostip"
+        android:id="@+id/text_ip"
         android:text="start http server please" />
     
     
