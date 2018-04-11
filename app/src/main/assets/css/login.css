@@ -1,0 +1,118 @@
+/**
+ * The first commented line is your dabblet’s title
+ */
+body{
+background: #e7e3e0;
+background: linear-gradient(e7e3e0, #f06, yellow);
+min-height: 100%;
+color:#8eb468;
+}
+.divmiddle{
+text-align: center;
+margin:0 auto;
+height:250px;
+width:320px; }
+h3
+{
+	display: block;
+    float: left;
+    -webkit-margin-start: 10px;
+    -webkit-margin-before: 3em;
+}
+.langSelect{
+-webkit-margin-before: 3em;
+-webkit-margin-after: 1em;
+-webkit-margin-end: 18px;
+-webkit-border-radius:5px;
+float: right;
+BACKGROUND-COLOR: #ffffff;
+}
+
+.box
+{
+	height:250px;
+    width:300px; 
+    -webkit-border-radius:5px;
+    background:#fefefe;
+    border: 1px solid #C3D4DB;
+	border-top:1px;
+    box-shadow:rgba(147,188,122,.7) 0 0 5px;
+    margin:0 auto 30px;
+    overflow:hidden;
+    text-align:center;
+}
+label{
+font:14px/22px Arial, Helvetica, Sans-serif;
+-webkit-margin-start: 10px;
+-webkit-margin-before: 3em;
+display:block;
+}
+.message{
+float: left;
+margin-left:12px;
+color:#888888;
+display:block;
+}
+
+a.linkhome{
+font:normal 14px/16px Arial, Helvetica, sans-serif;
+color:#888888;
+display:block;
+margin-left:12px;
+margin-top:24px;
+}
+a.linkhome:link{
+text-decoration:underline; 
+}
+a.linkhome:hover{
+text-decoration:underline; 
+}
+a.linkhome:visited{
+text-decoration:underline;
+}
+
+.box input[type=text]{
+border:3px solid #F7F9FA;
+margin:5px 8px 4px;
+padding:10px 0 10px 46px;
+width:235px;
+display:block;
+vertical-align:middle;
+background:url("../images/admin.png") no-repeat top left
+}
+.box input[type=password]{
+border:3px solid #F7F9FA;
+margin:5px 8px 4px;
+padding:10px 0 10px 46px;
+width:235px;
+display:block;
+vertical-align:middle;
+background:url("../images/pwd.png") no-repeat top left
+}
+
+
+.textgrey{
+color:#888888;
+}
+.btnLogin
+{
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:5px;
+    background:#8eb468;
+    background:-moz-linear-gradient(top, #badff3, #7acbed);
+    background:-webkit-gradient(linear, left top, left bottom, from(#8eb468), to(#8eb468));
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#badff3', EndColorStr='#7acbed')";
+    border:1px solid #7db0cc !important;
+    cursor: pointer;
+    padding:11px 16px;
+    font:bold 11px/14px Verdana, Tahomma, Geneva;
+    text-shadow:rgba(0,0,0,0.2) 0 1px 0px; 
+    color:#fff;
+    -moz-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    -webkit-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    margin-left:12px;
+    margin-top:50px;
+	padding:7px 21px;
+}

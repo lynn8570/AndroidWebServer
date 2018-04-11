@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<title>WLAN</title
+
+
+		
+		
+</head>
+<body>
+<script language="JavaScript">  
+function  checkversion() {
+		    window.location="/checkversion?force=true";
+		}	
+		
+		function  download() {
+		    window.location="/download?force=true";
+		}	
+		
+		function alertupgrade(){
+			if(window.confirm('$fotacomfirm$')){
+				//alert("upgrade");
+				window.location="/upgrade?force=true";
+			}else{
+				//alert("no");
+			}
+		}
+</script>
+<div class="box">
+
+<label>$fotadesc$</label><br/>
+$fotaversion$
+<a href="\" class="linkhome">$homepage$</a>
+</div>
+<body>
+</html>
+
+

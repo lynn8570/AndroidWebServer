@@ -1,0 +1,171 @@
+/**
+ * The first commented line is your dabblet’s title
+ */
+body{
+background: #e7e3e0;
+background: linear-gradient(e7e3e0, #f06, yellow);
+min-height: 100%;
+color:#8eb468;
+}
+label{
+font:14px/22px Arial, Helvetica, Sans-serif;
+-webkit-margin-start: 10px;
+-webkit-margin-before: 10px;
+}
+li{
+color:#888888;
+height:38Px;
+vertical-align:middle;
+line-height:30px 
+}
+
+.btnlock{
+float:right;
+height:34px ;
+-moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:5px;
+    background:#8eb468;
+    background:-moz-linear-gradient(top, #badff3, #7acbed);
+    background:-webkit-gradient(linear, left top, left bottom, from(#8eb468), to(#8eb468));
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#badff3', EndColorStr='#7acbed')";
+    border:1px solid #7db0cc !important;
+    cursor: pointer;
+    padding:11px 16px;
+    font:bold 11px/14px Verdana, Tahomma, Geneva;
+    text-shadow:rgba(0,0,0,0.2) 0 1px 0px; 
+    color:#fff;
+    -moz-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    -webkit-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    
+}
+.textgrey{
+color:#888888;
+}
+.main{
+width:320px;
+margin:0 auto;
+}
+input[type=text],
+input[type=password]{
+border:3px solid #F7F9FA;
+margin:5px 8px 4px;
+padding:8px 6px;
+width:270px;
+display:block;}
+.boxselect{
+border:3px solid #F7F9FA;
+BACKGROUND-COLOR: #ffffff;
+margin:5px 8px 4px;
+padding:8px 6px;
+width:290px;
+display:block;
+}
+ 
+.btnLogin
+{
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:5px;
+    background:#8eb468;
+    background:-moz-linear-gradient(top, #badff3, #7acbed);
+    background:-webkit-gradient(linear, left top, left bottom, from(#8eb468), to(#8eb468));
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#badff3', EndColorStr='#7acbed')";
+    border:1px solid #7db0cc !important;
+    cursor: pointer;
+    padding:11px 16px;
+    font:bold 11px/14px Verdana, Tahomma, Geneva;
+    text-shadow:rgba(0,0,0,0.2) 0 1px 0px; 
+    color:#fff;
+    -moz-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    -webkit-box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    margin-left:12px;
+	padding:7px 21px;
+}
+.langSelect{
+-webkit-margin-before: 3em;
+display:block;
+-webkit-border-radius:5px;
+BACKGROUND-COLOR: #ffffff;
+}
+a.logout{
+-webkit-margin-before: 3px;
+float: right;
+padding:0 6px 0 0;
+font:normal 14px/16px Arial, Helvetica, sans-serif;
+}
+a.logout:link{
+color:#8eb468;
+text-decoration:none; 
+}
+a.logout:hover{
+color:#333;
+text-decoration:underline; 
+}
+a.logout:visited{
+color:#8eb468;
+text-decoration:none;
+}
+a.showps{
+	-webkit-margin-start: 18px;
+	margin:18px;
+	font:normal 14px/16px Arial, Helvetica, sans-serif;
+	color:#b8cba6;
+}
+a.showps:link{
+text-decoration:none;
+}
+a.showps:visited{
+color:#b8cba6;
+text-decoration:none;
+}
+a.showps:hover{
+text-decoration:underline; 
+}
+.tips{
+font:11px/22px Arial, Helvetica, Sans-serif;
+color:#706b6b;
+margin:18px;
+}
+.versionname{
+font:11px/22px Arial, Helvetica, Sans-serif;
+color:#706b6b;
+display:block;
+margin:18px;
+}
+.versionlabel{
+font:11px/22px Arial, Helvetica, Sans-serif;
+color:#706b6b;
+font-weight:bold;
+}
+a.linkhome{
+font:normal 14px/16px Arial, Helvetica, sans-serif;
+color:#888888;
+display:block;
+margin-left:12px;
+margin-top:24px;
+}
+a.linkhome:link{
+text-decoration:underline; 
+}
+a.linkhome:hover{
+text-decoration:underline; 
+}
+a.linkhome:visited{
+text-decoration:underline;
+}
+.box{
+ 	-webkit-border-radius:5px;
+    background:#fefefe;
+    border: 1px solid #C3D4DB;
+	border-top:1px;
+    box-shadow:rgba(147,188,122,.7) 0 0 5px;
+    margin:0 auto 30px;
+    padding:8px 6px;
+    overflow:visible;
+    width:300px; }
+ #AjaxLoading{border:1px solid #93bc7a;color:#37a;font-size:14px;font-weight:bold;  border-radius:5px;}
+#AjaxLoading div.loadingWord{width:auto;height:70px;line-height:60px;background:#fff;color:#8eb468;}
+#AjaxLoading img{margin:10px 15px;float:left;display:inline;}

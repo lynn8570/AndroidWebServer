@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>固件升级</title>
+	<link rel="stylesheet" type="text/css" href="css/all.css?t=1475040281255"/>
+</head>
+<body >
+	<div class="outBody upW">
+	<div class="pagewrap" id="fix-both">
+            <ul class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"><li class="swiper-pagination-bullet">首页</li><li class="swiper-pagination-bullet">WLAN设置</li><li class="swiper-pagination-bullet">流量管理</li><li class="swiper-pagination-bullet swiper-pagination-bullet-active">固件升级</li><li class="swiper-pagination-bullet">设备信息</li><li class="swiper-pagination-bullet">系统设置</li></ul>
+        </div>
+	<div class="updateW">
+		<div class="check">
+			<div class="img">
+				<img src="images/mifi.png" alt="">
+			</div>
+			<div class="checkInfo">
+				<p class="versionName">当前版本</p>
+				<p class="versionInfo">$curversion$</p>
+			</div>
+			<button class="checkBtn txt3" onclick=><a class='txt3' href="updateWare.html">检查更新</a></button>
+		</div>
+		<div class="checkNew">
+			<div class="img">
+				<img src="images/mifi.png" alt="">
+			</div>
+			<div class="checkInfo">
+				<p class="versionName txt3">检查到新版本</p>
+				<p class="versionInfo txt3">V1.2.457678990</p>
+			</div>
+			<button class="checkBtn txt3" id='download'>立即下载</button>
+		</div>
+		<div class="sureUpdate">
+			<div class="img">
+				<img src="images/wareUpdate.png" alt="">
+			</div>
+			<h3 class="txt3">已下载新版本固件，是否升级？</h3>
+			<div class="infoUp"><p class="txt">点击"固件升级"后，MiFi系统将</p>
+				<p class="txt">自动重启</p>
+			</div>
+			<button class="upNow txt3" id='upNow'>立即升级</button>
+			<button class="upNext txt3" id='upNext'>下次再说</button>
+		</div>
+	</div>
+	
+	<div class="mask">
+        <div class="spinner-box">
+            <div class="spinner">
+                <i></i>
+            </div>
+        </div>
+        <p class="txt3">正在检查中</p>
+    </div>
+    <div class="checkNewVersion txt3">
+        <p>检测到新版本</p>
+    </div>
+    <div class="checkOldVersion txt3">
+        <p>已是最新版本</p>
+    </div>
+    </div>
+    <script src='js/jquery.min.js' ></script>
+    <script src='js/home.js'></script>
+    <script src='js/update.js'></script>
+</body>
+</html>

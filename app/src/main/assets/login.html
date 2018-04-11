@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>webserver test</title>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="stylesheet" type="text/css" href="css/loginm.min.css?t=1477365950590"/>
+  <script src='js/home.js'></script>
+  </head>
+  <body>
+  <div class="outBody">
+     <div class="tlt">
+       <p>
+        <span class="abc">test</span> <span class="ch">hotspot web server</span>
+       </p>
+     </div>  
+     <div class="center">
+      <div class="loginDiv">
+		    <div class="login">
+            <div class="img">
+              <img src="images/login.png" alt="">
+            </div>
+            <div>
+               <p class="txt">欢迎使用</p>
+               <p class="txt">便携式<span>Hotspot</span> </p>
+            </div>
+            <form method="POST"  name="forms" id="logforms" enctype="text/plain" >
+                <div class="input">
+                    <input class='txt' name='username' id='username' type="text" placeholder="用户名" value="$admin$">
+                </div>
+                <div class="input">
+                  <input class='txt' name='password' id='password' type="password" placeholder="密码">
+                  <p class="closeOrOpen">
+                    <span>
+                      <i class="line"></i>
+                      <i class="eye"></i>
+                    </span>
+                  </p>
+                </div>
+                <div class="errLogin">
+                   <span class="imgT"><img src="images/icon_tips.png" alt=""></span>
+                   <p>用户名与密码不匹配，请重试</p>
+                </div>
+                 <div class="errLogin">
+                   <span class="imgT"><img src="images/icon_tips.png" alt=""></span>
+                   <p>用户名或密码不能为空</p>
+                </div>
+            </form>
+        </div>
+        <button class='txt3' id="loginSubmit">登录</button>
+    </div>
+    </div>
+    </div>
+	<script language="JavaScript"> 
+	function toVaild(){  
+	    var pwd = document.getElementById("password").value;
+	    var adminname = document.getElementById("username").value;
+	     if(pwd == ""||adminname==""){
+	         $('.errLogin').eq(1).css('display','block');
+	         return false;
+	     }    
+		return true;
+	}
+	
+	function notMatch(notMatch){  
+		   notMatch='1';
+	     alert(notMatch);
+	     if(notMatch!=null&&notMatch!=""){
+	     	 alert(notMatch);
+      	 $('.errLogin').eq(0).css('display','block');
+      	}else{
+      		$('.errLogin').eq(0).css('display','none');
+      	}
+       return true;
+	}
+
+	function setSelectLanguage(checkValue){  
+		var select = document.getElementById("selectLanguage");  
+		for(var i=0; i<select.options.length; i++){  
+			if(select.options[i].value == checkValue){  
+				select.options[i].selected = true;  
+				break;  
+			}  
+		}  
+		display(checkValue);
+	}
+
+	 function  chgLang(value) {
+	    window.location="/lang?lang="+value;
+	}	
+	//window.onload = notMatch("$notMatch$");
+</script> 
+    <script src='js/jquery.min.js' ></script>
+    <script src='js/login.js'></script>
+</body>
+</html>

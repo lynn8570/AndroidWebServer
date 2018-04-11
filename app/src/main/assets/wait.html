@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
+<title>$progressTitle$</title>
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+</head>
+<body onload="initial()">
+<script language="JavaScript">   
+  function initial() {
+		setTimeout("reloadCheck()",5000);
+	}   
+	
+	function reloadCheck() {
+			 window.location="$fotatarget$";
+  }   
+  
+</script> 
+<div class="main">
+<div id="AjaxLoading" class="box" >
+	<div class="loadingWord"><img src="images/waiting.gif"/>$progressMsg$....</div>
+</div>
+</div>
+</body>
+
+</html>
+
+

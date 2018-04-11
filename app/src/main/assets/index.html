@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>webserver demo</title>
+    <link rel="stylesheet" href="css/sm.min.css">
+    <link rel="stylesheet" href="css/sm-extend.min.css">
+    <link rel="stylesheet" type="text/css" href="css/all.css?t=1477365950590"/>
+    <script src='js/home.js'></script>
+
+</head>
+
+<body>
+<script language="JavaScript">   
+                function showps(){   
+                    if (this.forms.password.type="password") {  
+                        document.getElementById("box").innerHTML="<input type=\"text\" id=\"password\" name=\"password\";' value="+this.forms.password.value+">";   
+                        document.getElementById("click").innerHTML="<a href=\"javascript:hideps()\" class=\"showps\">隐藏密码</a>"  
+                    }  
+                }   
+                function hideps(){   
+                    if (this.forms.password.type="text") {  
+                        document.getElementById("box").innerHTML="<input type=\"password\" id=\"password\" name=\"password\";' value="+this.forms.password.value+">";   
+                        document.getElementById("click").innerHTML="<a href=\"javascript:showps()\" class=\"showps\">显示密码</a>"  
+                    }   
+                }
+                function strlen(str){  
+							    var len = 0;  
+							    for (var i=0; i<str.length; i++) {   
+							     var c = str.charCodeAt(i);    
+							     if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {   
+							       len++;   
+							     }   
+							     else {   
+							      len+=3;   
+							     }   
+							    }   
+				    return len;  
+				}  
+                function toVaild(){
+                var val = document.getElementById("SSID").value;
+                var val2 = document.getElementById("password").value;
+                var val3 = document.getElementById("security").value;
+                 
+                 if(val == ""){
+                     alert("网络名称不能为空");
+                     return false;
+                 }
+                 if(strlen(val)>32){
+                 	 alert("SSID 名称长度应不大于32个字符");
+                     return false;
+                 }	
+                 if(val3!=0&&val2.length <8){
+                     alert("密码至少应包含8个字符");
+                     return false;
+                 }
+				 if(strlen(val2)>63){
+                 	 alert("密码长度不超过64个字符");
+                     return false;
+                 }
+                 else{
+                     
+                     return true;
+                 }
+            	}
+            	
+            	
+            
+				function toVaildTotal(){
+					var total = document.getElementById("total").value;
+					var re = /^[0-9]*[1-9][0-9]*$/ ; 
+					var result = re.test(total);
+					if(result){
+						 
+					}else{
+						alert("请输入整数");
+					}
+					return result;
+				}
+            	
+            	function setBlock(th){
+            		var cid=th.id;
+            		//alert(cid);
+            		window.location="/block?macaddress="+cid;
+            		
+            	}
+            	function setUnBlock(th){
+            		var cid=th.id;
+            		//alert(cid);
+            		window.location="/unblock?macaddress="+cid;
+            		
+            	}
+            	function setSelectChecked(checkValue,checkValue2,checkValue3,checkValue4,checkValue5){  
+    				var select = document.getElementById("security");  
+    				for(var i=0; i<select.options.length; i++){  
+	       				if(select.options[i].value == checkValue){  
+	            			select.options[i].selected = true;  
+	            			break;  
+	        			}  
+    				}  
+    				display(checkValue);
+    				
+    				var select2 = document.getElementById("selectLanguage");  
+					for(var i=0; i<select2.options.length; i++){  
+						if(select2.options[i].value == checkValue2){  
+							select2.options[i].selected = true;  
+							break;  
+						}  
+					}  
+
+					var select3 = document.getElementById("limit");  
+					for(var i=0; i<select3.options.length; i++){  
+						if(select3.options[i].value == checkValue3){  
+							select3.options[i].selected = true;  
+							break;  
+						}  
+					}  
+					
+					//var select4 = document.getElementById("maxconnect");  
+					//for(var i=0; i<select4.options.length; i++){  
+					//	if(select4.options[i].value == checkValue4){  
+					//		select4.options[i].selected = true;  
+					//		break;  
+					//	}  
+					//}  
+					
+					
+					var select5 = document.getElementById("calibration");  
+					for(var i=0; i<select5.options.length; i++){  
+						if(select5.options[i].value == checkValue5){  
+							select5.options[i].selected = true;  
+							break;  
+						}  
+					}  
+					
+
+    			}
+    			
+    			 function display(value){
+    			 	
+			         var traget=document.getElementById("drawer");
+			         if(value==0&&traget.style.display!="none"){
+			                traget.style.display="none";
+			         }else{
+			                  traget.style.display="";
+			         }
+                 }
+                 
+		
+		
+		 function  chgLang(value) {
+		    window.location="/lang?lang="+value;
+		}	
+		function  chgMax(value) {
+		    window.location="/chgmax?max="+value;
+		}	
+    
+    	function  checkversion() {
+		    window.location="/checkversion?force=true";
+		}	
+		
+		function  download() {
+		    window.location="/download?force=true";
+		}	
+		
+		function alertupgrade(){
+			if(window.confirm('$fotacomfirm$')){
+				//alert("upgrade");
+				window.location="/upgrade?force=true";
+			}else{
+				//alert("no");
+			}
+		}
+		
+		function selectRadio(radioid,radioSecurity,radioCal,radioLimit){
+			//流量校准
+			//radioLimit="2";
+			$("input[name='responeTraf']").each(function(){
+				//alert($(this).val());
+				if(radioLimit==$(this).val()){
+					$(this).attr("checked",'checked');
+					$(this).parent('label').addClass('active');
+					$(this).parent('label').siblings().removeClass('active');
+				}
+			});
+			
+			//超限设置
+			//radioCal ='3';
+			//alert(radioCal);
+			$("input[name='checkTime']").each(function(){
+				//alert($(this).val());
+				if(radioCal==$(this).val()){
+					$(this).attr("checked",'checked');
+					$(this).parent('label').addClass('active');
+					$(this).parent('label').siblings().removeClass('active');
+				}
+			});
+			
+			//wlan 类型
+			var safeIndex=0;
+			//radioSecurity ='1';
+			$('#security').val(radioSecurity);//设置表单值
+			if(radioSecurity=='1'){
+				$('.passWrap').css('display','block');
+				safeIndex=0;
+			}else{
+				$('.passWrap').css('display','none');
+				safeIndex=1;
+			}
+			$("input[name='safe']").eq(safeIndex).attr("checked",'checked');
+			$("input[name='safe']").eq(safeIndex).parent('label').addClass('active');
+			$("input[name='safe']").eq(safeIndex).parent('label').siblings().removeClass('active');
+			
+			//首页max
+			//radioid="five";
+			//var numRadio = document.getElementById(radioid);  
+			//numRadio.checked=true;
+			$("input[name='selected']").each(function(){
+				//alert($(this).val());
+				if(radioid==$(this).attr("id")){
+					$(this).attr("checked",'checked');
+					$(this).parent('li').addClass('radioA');
+					$(this).parent('li').siblings().removeClass('radioA');
+				}
+			});
+			
+			
+			
+		}
+		
+</script> 
+<div class="outBody page">
+        <div class="tlt">
+           <p>
+            <span class="abc">4G LTE</span> <span class="ch">移动数据终端</span>
+           </p>
+           <p class="logout"><a href="/logout">退出</a></p>
+         </div>  
+        <div class="page-group">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="homePage">
+	<div class="selectedNum">
+		<span class="txt">设置允许连接数</span>
+		<ul>
+			<li class="txt radioA">
+      			<input type="radio" name="selected" id='one' >   
+				<label for="one"></label>
+				<span>1</span>
+			</li>
+			<li class="txt">
+      			<input type="radio" name="selected" id='two'>   
+				<label for="two"></label>
+				<span>2</span>
+			</li>
+			<li class="txt">
+      			<input type="radio" name="selected" id='three'>    
+				<label for="three"></label>
+				<span>3</span>
+			</li>
+			<li class="txt">
+      			<input type="radio" name="selected" id='four'> 
+				<label for="four"></label>
+				<span>4</span>
+			</li>
+			<li class="txt">
+      			<input type="radio" name="selected" id='five'>      
+				<label for="five"></label>
+				<span>5</span>
+			</li>
+			<li class="txt">
+				<!-- &lt -->
+			</li>
+		</ul>
+	</div>
+	<div class="allowedN">
+		<span class="txt">已允许数量:</span>
+		<span class="txt num allowedNm">$connected$</span>
+		<span class="txt">不允许数量:</span>
+		<span class="txt num NallowedN">$block$</span>
+	</div>
+	<div class="selectDet">
+		<ul>
+			$connectedlist$
+			$blocklist$
+		</ul>
+	</div>
+</div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="comContent contentWrap">
+    <form class="wlanForm" name="wlanForm" action="/submit" enctype="text/plain" method="post">
+        <div class="formBody">
+            <input type="text" name="SSID" id="SSID" class="inputSelf" placeholder="网络名称（SSID）" value="$SSID$" val="$SSID$">
+            <input type="hidden" name="security" id="security" value="1" val="$security$">
+            <div class="radio">
+                <span>安全模式</span>
+                <label class="active"><i></i>WPA2 PSK
+                    <input type="radio" name="safe" class="safeModule" value="1">
+                </label>
+                <label><i></i>NONE
+                    <input type="radio" class="safeModule" name="safe" value="0">
+                </label>
+            </div>
+            <div class="passWrap">
+                <input type="text" placeholder="密码" class="inputSelf" name="password" id="passWlan" value="$password$" val="$password$">
+                <label class="eye">
+                    <input type="checkbox" name="expressly" id="eyeCheck">
+                </label>
+                
+            </div>
+                <p style="display:none" class="errortipInfo"><i class="errorIcon"></i> 网络名称不能为空</p>
+            	<p style="display:none" class="errortipInfo"><i class="errorIcon"></i> 密码至少包含8个字符，请重新设置</p>
+            	<p style="display:none" class="errortipInfo"><i class="errorIcon"></i> 网络名称或密码长度不超过32个字符，请重新设置</p>
+            	<p style="display:none" class="errortipInfo"><i class="errorIcon"></i> 新旧名称密码相同，请重新设置</p>
+            
+        </div>
+        <button class="saveBtn" id="wlanSave">保存设置</button>
+    </form>
+    <div class="maskWlan" id="wlanSuccess">
+        <div class="newWlan">
+            <h4>WLAN设置成功，请重新连接WLAN</h4>
+            <p><label>新的网络名称：</label><span>Liveman_MiFi_T15</span></p>
+            <p><label>WLAN密码：</label><span>Lesports</span></p>
+            <button class="btnBack" id="goLoginBtn">返回登录</button>
+        </div>
+    </div>
+</div>
+
+                </div>
+                <div class="swiper-slide">
+                    <div class="comContent trafContent">
+    <form class="wlanForm" name="wlanForm" action="" enctype="text/plain">
+        <div class="formBody">
+            <div class="trafInfoWrap">
+                <span class="tipInfo">已用流量(MB)</span>
+                <span class="trafNum">$data$</span>
+                <span class="tipInfo">总流量：$total$</span>
+            </div>
+            <div class="inputNum">
+                <input type="text" name="total" id="trafNum" class="inputSelf" placeholder="输入当月可用总流量" value="$total$" >
+                <p class="typeInfo">
+                    <label class="active">MB
+                        <input type="radio" name="typeB" value="1" class="safeModule" />
+                    </label>/
+                    <label>GB
+                        <input type="radio" name="typeB" value="2" class="safeModule" />
+                    </label>
+                </p>
+                <p class="errortipInfo" id="checktrafNum" ><i class="errorIcon"></i> 请输入整数</p>
+                <p class="errortipInfo" id="checktrafNumMax" ><i class="errorIcon"></i> 输入的流量值超限，请重新输入</p>
+				<p class="errortipInfo" id="checktrafNumMin" ><i class="errorIcon"></i> 请输入大于0的整数 </p>
+            </div>
+            <div class="radio">
+                <p class="smallTitle">流量自动校准</p>
+                <div class="listWrap">
+                <label><i></i>每天
+                    <input type="radio" name="checkTime" class="safeModule" value="1">
+                </label>
+                <label class="active"><i></i>3天
+                    <input type="radio" name="checkTime" class="safeModule" value="3">
+                </label>
+                <label><i></i>7天
+                    <input type="radio" name="checkTime" class="safeModule" value="7">
+                </label>
+                <label><i></i>关闭
+                    <input type="radio" name="checkTime" class="safeModule" value="0">
+                </label>
+                </div>
+            </div>
+            <div class="radio">
+                <p class="smallTitle">流量超限时</p>
+                <div class="listWrap">
+                <label class="active"><i></i>忽略
+                    <input type="radio" name="responeTraf" checked="" class="safeModule" value="3">
+                </label>
+                <label class="treeWid"><i></i>断网
+                    <input type="radio" name="responeTraf" class="safeModule" value="2">
+                </label>
+                </div>
+            </div>
+        </div>
+        <button class="saveBtn" id="trafSave">保存设置</button>
+    </form>
+    
+</div>
+
+                    </div>
+                    <div class="swiper-slide"><div class="firmwareUpdate">
+	<div class="check">
+		<div class="img">
+			<img src="images/mifi.png" alt="">
+		</div>
+		<div class="checkInfo paddingCheck">
+			<p class="versionName txt3">当前版本</p>
+			<p class="versionInfo txt3">$curversion$</p>
+		</div>
+		<div style="display:none" >
+		<label>$fotadesc$</label><br/>
+		$fotaversion$
+		</div>
+		<button class="checkBtn txt3" id='checkForNew'>检查更新</a></button>
+	</div>
+	<div class="updateW">
+		<div class="checkNew">
+			<div class="img">
+				<img src="images/mifi.png" alt="">
+			</div>
+			<div class="checkInfo paddingCheck">
+				<p class="versionName txt3">检查到新版本</p>
+				<p class="versionInfo txt3">v2.2333333</p>
+			</div>
+			<div class="alertSD">
+				<p>请确认在MiFi插入Micro SD卡</p>
+			</div>
+			<button class="checkBtn txt3" id='download'>立即下载</button>
+		</div>
+	</div>
+</div></div>
+                    <div class="swiper-slide">
+                        <div class="comContent equipContent">
+    <div class="formBody">
+        <div class="imgWrap">
+            <img src="images/smallMifi.png" alt="mifi">
+        </div>
+        <ul class="equipInfoList">
+            <li>
+                <label class="tipLabel">设备型号：</label><span class="info">L1</span></li>
+            <li>
+                <label class="tipLabel">SIM卡号：</label><span class="info">$phonenumber$</span></li>
+            <li>
+                <label class="tipLabel">IMEI号/MEID号：</label><span class="info">$deivceid$</span></li>
+            <li>
+                <label class="tipLabel">软件版本：</label><span class="info">$curversion$</span></li>
+        </ul>
+    </div>
+</div>
+
+                </div>
+                <div class="swiper-slide"><div class="comContent systemWrap">
+    <form class="systemForm" name="systemForm" action="" enctype="multipart/form-data">
+        <div class="formBody">
+            <input type="text" readOnly="true" id="userName" name="userName" class="inputSelf" placeholder="用户名" value="$admin$">
+            <p class="eye changeEye"></p>
+            <input type="text" name="oldpwd" class="inputSelf pswInput" id="oldpwd" placeholder="当前密码">
+            <input type="text" id="newpwd" placeholder="新密码" class="inputSelf pswInput marginB0" name="newpwd" id="passWlan">
+            <p id="cur_pwd_null" class="errortipInfo" style="display:none"><i class="errorIcon"></i> 当前密码不能为空</p>
+            <p id="new_pwd_null" class="errortipInfo" style="display:none"><i class="errorIcon"></i> 新密码不能为空</p>
+            <p id="new_2_pwd_null" class="errortipInfo" style="display:none"><i class="errorIcon"></i> 确认密码不能为空</p>
+			<p id="new_old_same" class="errortipInfo" style="display:none"><i class="errorIcon"></i> 新旧密码相同，请重新设置</p>
+            <p id="pwd_2_pwd_asymmetric" class="errortipInfo" style="display:none"><i class="errorIcon"></i> 新密码与确认新密码不匹配</p>
+            <p id="cur_32_max_pwd" class="errortipInfo" style="display:none"><i class="errorIcon"></i> 当前密码超过32个字符，请重新输入</p>
+			<p id="new_32_max_pwd" class="errortipInfo" style="display:none"><i class="errorIcon"></i> 新密码超过32个字符，请重新输入</p>
+			<p id="cur_6_min_pwd" class="errortipInfo" style="display:none"><i class="errorIcon"></i> 当前密码小于6个字符，请重新输入</p>
+			<p id="new_6_min_pwd" class="errortipInfo" style="display:none"><i class="errorIcon"></i> 新密码小于6个字符，请重新输入</p>
+            <p id="pwd_err_settings" class="errortipInfo" style="display:none"><i class="errorIcon"></i> 当前密码有误或操作出错，请重新设置</p>
+            <input type="text" id="newpwd2" class="inputSelf pswInput marginT3" name="newpwd2" id="" placeholder="确认新密码">
+        </div>
+        <button class="saveBtn" id="systemSave">保存设置</button>
+    </form>
+    <div class="maskSystem" id="wlanSuccess1">
+        <div class="newWlan">
+            <h4>系统设置成功，请重新登录</h4>
+            <button class="btnBack" id="goLoginBtn1">立即登录</button>
+        </div>
+    </div>
+</div>
+</div>
+                </div>
+                <!-- Add Pagination -->
+            </div>
+            <div class="pagewrap" id="fix-both">
+                <ul class="swiper-pagination">
+                </ul>
+            </div>
+            <p class="trafSuccess" id="trafSuccess">
+                流量设置成功
+            </p>
+            <div class="checkNewVersion txt3">
+                <p>检测到新版本</p>
+            </div>
+            <div class="checkOldVersion txt3">
+                <p>已是最新版本</p>
+            </div>
+            <div class="mask">
+                <div class="spinner-box">
+                    <div class="spinner">
+                        <i></i>
+                    </div>
+                </div>
+                <p class="txt3">正在检查中</p>
+            </div>
+            <div class="updateW">
+                <div class="sureUpdate">
+                <div class="img">
+                    <img src="images/wareUpdate.png" alt="">
+                </div>
+                <h3 class="txt3">已下载新版本固件，是否升级？</h3>
+                <div class="infoUp"><p class="txt">点击"立即升级"后，MiFi系统将</p>
+                    <p class="txt">自动重启</p>
+                </div>
+                <button class="upNow txt3" id='upNow'>立即升级</button>
+                <button class="upNext txt3" id='upNext'>下次再说</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script type='text/javascript' src='js/zepto.js' charset='utf-8'></script>
+    <script type="text/javascript" src="js/zepto.extend.js"></script>
+    <script type="text/javascript" src="js/zepto.ui.js"></script>
+    <script type="text/javascript" src="js/zepto.iscroll.js"></script>
+    <script src='js/sm.min.js'></script>
+    <script src="js/swiper.js"></script>
+	<script src='js/jquery.min.js' ></script>
+    <script src='js/homepage.js'></script>
+    <script src='js/page.js'></script>
+    <script src='js/update.js'></script>
+    <script type="text/javascript">
+    window.onload = function() {
+        load();
+        wlan();
+        
+	   selectRadio("$maxname$","$security$","$calibration$","$limit$");
+
+    }
+    </script>
+</body>
+
+</html>

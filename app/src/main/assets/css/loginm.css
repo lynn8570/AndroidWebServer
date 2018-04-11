@@ -1,0 +1,409 @@
+@media screen and (max-width: 321px) {
+  .txt {
+    font-size: 12px;
+  }
+
+  .txt2 {
+    font-size: 13px;
+  }
+
+  .txt3 {
+    font-size: 14px;
+  }
+}
+@media screen and (min-width: 321px) and (max-width: 400px) {
+  .txt {
+    font-size: 13px;
+  }
+
+  .txt2 {
+    font-size: 14px;
+  }
+
+  .txt3 {
+    font-size: 15px;
+  }
+}
+@media screen and (min-width: 400px) and (max-width: 768px) {
+  .txt {
+    font-size: 14px;
+  }
+
+  .txt2 {
+    font-size: 15px;
+  }
+
+  .txt3 {
+    font-size: 16px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .txt {
+    font-size: 15px;
+  }
+
+  .txt2 {
+    font-size: 16px;
+  }
+
+  .txt3 {
+    font-size: 17px;
+  }
+}
+html {
+  font-size: 46.875px;
+}
+
+html, body {
+  position: relative;
+  height: 100%;
+}
+
+body {
+  background: #f5f5f5;
+  font-family: "PingFang SC", "Netto","SimHei", Arial, sans-serif !important;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+
+input {
+  vertical-align: middle;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+}
+
+p, h4 {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  outline: none;
+  font-family-: 'PingFangSC';
+}
+
+.formBody, span, label, input, button, p, div, h4 {
+  font-family: "PingFang SC", "Netto","SimHei", Arial;
+}
+
+.swiper-container {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 0.59733rem;
+  background: #f5f5f5;
+  height: 100%;
+}
+
+.swiper-slide-active {
+  height: auto;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+.swiper-slide-active::-webkit-scrollbar {
+  width: 3px;
+}
+
+.swiper-pagination-bullet {
+  width: 3.79733rem;
+  height: 1.42933rem;
+  text-align: center;
+  line-height: 1.42933rem;
+  font-size: 0.59733rem;
+  color: #9b9b9b;
+  opacity: 1;
+  text-align: center;
+  background: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  margin: 0 !important;
+  border-right: 1px solid #d0d0d0;
+  cursor: pointer;
+}
+
+.swiper-pagination-bullet-active {
+  color: #fff;
+  background: #fb006b;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}
+
+.swiper-pagination {
+  position: relative;
+  width: 22.784rem !important;
+  left: 0;
+  font-family-: "PingFangSC","Nettto";
+}
+
+.swiper-pagination li {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: 0 0.04267rem 0.08533rem 0 rgba(0, 0, 0, 0.06);
+}
+
+.pagewrap {
+  width: 100%;
+  z-index: 9999;
+  overflow: hidden;
+  position: absolute;
+  top: 1.81333rem;
+  height: 1.42933rem;
+}
+
+.pagewrap::-webkit-scrollbar {
+  height: 0px;
+}
+
+.outBody {
+  width: 100%;
+  max-width: 22.76267rem;
+  position: relative;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.errortipInfo {
+  display: none;
+  font-size: 0.46933rem;
+  color: #fb006b;
+  line-height: 1.09;
+  text-align: left;
+  margin: 0.46933rem 0 0;
+}
+.errortipInfo .errorIcon {
+  display: inline-block;
+  width: 0.576rem;
+  height: 0.64rem;
+  background: url(../images/icon_tips.png) no-repeat center top;
+  background-size: contain;
+  vertical-align: middle;
+  margin-left: 0.256rem;
+}
+
+.tlt {
+  width: 100%;
+  max-width: 22.76267rem;
+  height: 1.81333rem;
+  background-color: #333;
+}
+.tlt p {
+  margin: 0;
+  float: left;
+  font-size: 0.64rem;
+  color: #999;
+  line-height: 1.81333rem;
+}
+.tlt .abc {
+  font-family: 'Netto', Arial;
+  margin-left: 0.42667rem;
+}
+.tlt .ch {
+  font-family: 'PingFang SC',"SimHei";
+}
+.tlt .logout {
+  cursor: pointer;
+  float: right;
+  margin-right: 0.42667rem;
+  font-family: 'PingFang SC',"SimHei";
+  font-size: 0.64rem;
+  line-height: 1.81333rem;
+}
+.tlt .logout a {
+  color: #f5f5f5;
+  text-decoration: none;
+}
+
+body {
+  background-color: #f5f5f5;
+  height: 100%;
+  overflow: auto;
+}
+
+.outBody {
+  width: 100%;
+  max-width: 22.76267rem;
+  position: relative;
+  margin: 0 auto;
+}
+
+.loginDiv {
+  text-align: center;
+}
+
+.tlt {
+  width: 100%;
+  height: 1.81333rem;
+  background-color: #333;
+}
+.tlt p {
+  margin: 0;
+  float: left;
+  font-size: 0.64rem;
+  color: #999999;
+  line-height: 1.81333rem;
+}
+.tlt .abc {
+  font-family: 'Netto', Arial;
+  margin-left: 0.42667rem;
+}
+.tlt .ch {
+  font-family: 'PingFang SC',"SimHei";
+}
+
+div.login {
+  width: 12.45867rem;
+  height: 16.064rem;
+  margin: 0.53333rem auto;
+  margin-bottom: 1.152rem;
+  padding: 1.17333rem 0.896rem 0 0.896rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 9px 30px 0 rgba(176, 223, 230, 0.14);
+}
+div.login .img {
+  width: 12.52267rem;
+  height: 6.35733rem;
+  margin-bottom: 0.85333rem;
+}
+div.login .img img {
+  width: 100%;
+  height: 100%;
+}
+div.login p.txt {
+  color: #362121;
+  line-height: 0.98133rem;
+  width: 12.52267rem;
+  text-align: center;
+  font-size: 0.59733rem;
+  font-family: 'PingFang SC',"SimHei";
+  margin: 0;
+  padding: 0;
+}
+div.login p.txt span {
+  font-family: 'Netto', Arial;
+}
+div.login form {
+  width: 12.52267rem;
+  height: auto;
+  text-align: center;
+  margin-top: 0.98133rem;
+}
+div.login form .input, div.login form input {
+  position: relative;
+  display: block;
+  width: 11.712rem;
+  height: 1.70667rem;
+  border-radius: 0.04267rem;
+  background-color: #f5f5f5;
+  font-family: 'PingFang SC',"SimHei";
+  font-size: 0.55467rem;
+  line-height: 0.92587rem;
+  outline: none;
+  padding-left: 0.42667rem;
+}
+div.login form .input:nth-of-type(2), div.login form input:nth-of-type(2) {
+  margin-top: 0.85333rem;
+}
+div.login form .closeOrOpen {
+  position: absolute;
+  width: 2.13333rem;
+  height: 1.28rem;
+  z-index: 2;
+  right: -0.42667rem;
+  top: 0;
+}
+div.login form .closeOrOpen span {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+}
+div.login form .closeOrOpen span .line {
+  position: absolute;
+  display: block;
+  height: 1.17333rem;
+  margin: 0.29867rem 0;
+  width: 0.064rem;
+  background-color: #d0d0d0;
+}
+div.login form .closeOrOpen span .eye {
+  position: absolute;
+  display: block;
+  left: 50%;
+  height: 100%;
+  width: 100%;
+  left: 0.04267rem;
+  top: 0.256rem;
+  background: #f5f5f5 url("../images/eyeClose.png") no-repeat center;
+  background-size: 44% auto;
+}
+div.login form .closeOrOpen span .eye.bgCss {
+  background: #f5f5f5 url("../images/eyeOpen.png") no-repeat center;
+  background-size: 44% auto;
+}
+div.login form .errLogin {
+  display: none;
+  margin: 0.36267rem 0 0 0.064rem;
+  height: 0.576rem;
+}
+div.login form .errLogin span.imgT {
+  display: block;
+  width: 0.576rem;
+  height: 0.576rem;
+  float: left;
+}
+div.login form .errLogin span.imgT img {
+  width: 100%;
+  height: 100%;
+}
+div.login form .errLogin p {
+  font-family: 'PingFang SC',"SimHei";
+  font-size: 0.512rem;
+  line-height: 0.576rem;
+  letter-spacing: 0.0192rem;
+  text-align: left;
+  color: #fb006b;
+  margin: 0;
+  margin-left: 0.384rem;
+  float: left;
+}
+
+button.txt3 {
+  border: 0;
+  width: 10.66667rem;
+  height: 1.70667rem;
+  border-radius: 1.06667rem;
+  background-color: #fb006b;
+  box-shadow: 0 10px 34px 0 rgba(251, 0, 106, 0.3);
+  color: #fff;
+  font-size: 0.64rem;
+  font-family: 'PingFang SC',"SimHei";
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 0.21333rem;
+}
+
+@media screen and (min-width: 415px) {
+  .loginDiv {
+    width: 14.16533rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
+/*# sourceMappingURL=loginm.css.map */

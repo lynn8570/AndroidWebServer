@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes"/>
+<title>WLAN热点</title>
+<link rel="stylesheet" type="text/css" href="css/index.css">
+
+</head>
+<body>
+<script language="JavaScript">   
+                function showps(){   
+                    if (this.forms.password.type="password") {  
+                        document.getElementById("box").innerHTML="<input type=\"text\" id=\"password\" name=\"password\";' value="+this.forms.password.value+">";   
+                        document.getElementById("click").innerHTML="<a href=\"javascript:hideps()\" class=\"showps\">隐藏密码</a>"  
+                    }  
+                }   
+                function hideps(){   
+                    if (this.forms.password.type="text") {  
+                        document.getElementById("box").innerHTML="<input type=\"password\" id=\"password\" name=\"password\";' value="+this.forms.password.value+">";   
+                        document.getElementById("click").innerHTML="<a href=\"javascript:showps()\" class=\"showps\">显示密码</a>"  
+                    }   
+                }
+                function strlen(str){  
+				    var len = 0;  
+				    for (var i=0; i<str.length; i++) {   
+				     var c = str.charCodeAt(i);    
+				     if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {   
+				       len++;   
+				     }   
+				     else {   
+				      len+=3;   
+				     }   
+				    }   
+				    return len;  
+				}  
+                function toVaild(){
+                var val = document.getElementById("SSID").value;
+                var val2 = document.getElementById("password").value;
+                var val3 = document.getElementById("security").value;
+                 
+                 if(val == ""){
+                     alert("网络名称不能为空");
+                     return false;
+                 }
+                 if(strlen(val)>32){
+                 	 alert("SSID 名称长度应不大于32个字符");
+                     return false;
+                 }	
+                 if(val3!=0&&val2.length <8){
+                     alert("密码至少应包含8个字符");
+                     return false;
+                 }
+				 if(strlen(val2)>63){
+                 	 alert("密码长度不超过64个字符");
+                     return false;
+                 }
+                 else{
+                     
+                     return true;
+                 }
+            	}
+            	
+            	
+            	function toVaildPwd(){
+                var oldpwd = document.getElementById("oldpwd").value;
+                var newpwd = document.getElementById("newpwd").value;
+				var username = document.getElementById("username").value;
+                 
+                 if(oldpwd == ""||newpwd==""){
+                     alert("密码不能为空");
+                     return false;
+                 }
+				 if(username==""){
+				 	 alert("管理员名称不能为空");
+                     return false;
+				 }
+                 if(oldpwd==newpwd){
+                	alert("新旧密码相同");
+                     return false;
+                 }
+                 
+                 if(strlen(username)>32||strlen(newpwd)>32){
+                 	alert("用户名或密码长度不超过32个字符");
+                 	return false;
+                 }
+                     return true;
+            	}
+				function toVaildTotal(){
+					var total = document.getElementById("total").value;
+					var re = /^[0-9]*[1-9][0-9]*$/ ; 
+					var result = re.test(total);
+					if(result){
+						 
+					}else{
+						alert("请输入整数");
+					}
+					return result;
+				}
+            	
+            	function setBlock(th){
+            		var cid=th.id;
+            		//alert(cid);
+            		window.location="/block?macaddress="+cid;
+            		
+            	}
+            	function setUnBlock(th){
+            		var cid=th.id;
+            		//alert(cid);
+            		window.location="/unblock?macaddress="+cid;
+            		
+            	}
+            	function setSelectChecked(checkValue,checkValue2,checkValue3,checkValue4,checkValue5){  
+    				var select = document.getElementById("security");  
+    				for(var i=0; i<select.options.length; i++){  
+	       				if(select.options[i].value == checkValue){  
+	            			select.options[i].selected = true;  
+	            			break;  
+	        			}  
+    				}  
+    				display(checkValue);
+    				
+    				var select2 = document.getElementById("selectLanguage");  
+					for(var i=0; i<select2.options.length; i++){  
+						if(select2.options[i].value == checkValue2){  
+							select2.options[i].selected = true;  
+							break;  
+						}  
+					}  
+
+					var select3 = document.getElementById("limit");  
+					for(var i=0; i<select3.options.length; i++){  
+						if(select3.options[i].value == checkValue3){  
+							select3.options[i].selected = true;  
+							break;  
+						}  
+					}  
+					
+					var select4 = document.getElementById("maxconnect");  
+					for(var i=0; i<select4.options.length; i++){  
+						if(select4.options[i].value == checkValue4){  
+							select4.options[i].selected = true;  
+							break;  
+						}  
+					}  
+					
+					
+					var select5 = document.getElementById("calibration");  
+					for(var i=0; i<select5.options.length; i++){  
+						if(select5.options[i].value == checkValue5){  
+							select5.options[i].selected = true;  
+							break;  
+						}  
+					}  
+					
+
+    			}
+    			
+    			 function display(value){
+    			 	
+			         var traget=document.getElementById("drawer");
+			         if(value==0&&traget.style.display!="none"){
+			                traget.style.display="none";
+			         }else{
+			                  traget.style.display="";
+			         }
+                 }
+                 
+		
+		
+		 function  chgLang(value) {
+		    window.location="/lang?lang="+value;
+		}	
+		function  chgMax(value) {
+		    window.location="/chgmax?max="+value;
+		}	
+    
+    	function  checkversion() {
+		    window.location="/checkversion?force=true";
+		}	
+		
+		function  download() {
+		    window.location="/download?force=true";
+		}	
+		
+		function alertupgrade(){
+			if(window.confirm('$fotacomfirm$')){
+				//alert("upgrade");
+				window.location="/upgrade?force=true";
+			}else{
+				//alert("no");
+			}
+		}
+</script> 
+<div class="main">
+<a href="/logout" class="logout">退出</a>
+<select id="selectLanguage" class="langSelect" onchange="chgLang(this.value);">
+               <option value="zh">中文</option>
+                <option value="en">ENGLISH</option>
+</select>
+<br/>
+<h1>设置WLAN热点</h1>
+<form method="POST" class="box box1" action="/submit" name="forms" enctype="text/plain" onsubmit="return toVaild()">
+<label>网络名称: </label>
+<input type="text" name="SSID" id="SSID" value="$SSID$" />
+<br />
+<label>安全性: </label>
+<select class="boxselect" name="security" id="security" onchange="display(this.value);" > 
+<option value="0">None</option> 
+<option value="1"  >WPA2 PSK</option> 
+</select> 
+<br />
+<span id="drawer" style="drawerstype" >
+<label>密码: </label>
+<span id="box"><input type="password" name="password"  id="password" value="$password$" /></span> 
+<span id="click"><a href="javascript:showps()" class="showps">显示密码</a></span>
+<br />
+<span class="tips">密码至少应包含8个字符</span>
+<br />
+</span>
+
+<input type="submit" id="submit"  value="保存" class="btnLogin"/>
+
+</form>
+
+<h1>概况</h1>
+<div class="box">
+<h3>热点已启用</h3>
+<span class="textgrey">$connected$个已连接，$block$个已阻止</span>
+<br/>
+<h3>已连接用户</h3>
+<ul>
+$connectedlist$
+
+</ul>
+
+
+<h3>已封锁用户</h3>
+<ul>
+$blocklist$
+</ul>
+<br/>
+<label>最大设备连接数：</label>
+<select id="maxconnect" name ="maxconnect" class="boxselect" onchange="chgMax(this.value);">
+               <option value="1">1</option>
+               <option value="2">2</option>
+               <option value="3">3</option>
+               <option value="4">4</option>
+               <option value="5">5</option>
+</select><br />
+</div>
+<h1>流量管理</h1>
+<div class="box">
+<label>已使用：$data$</label>
+<br />
+<form method="POST" action="/settotal" name="forms3" enctype="text/plain" onsubmit="return toVaildTotal()">
+<label>总流量(MB):</label>
+<input type="text" name="total"  id="total" value="$total$" />
+<br />
+<label>流量超限时:</label>
+<select id="limit" name="limit" class="boxselect">
+               <!--<option value="1">提醒</option>-->
+               <option value="2">断网</option>
+               <option value="3">忽略</option>
+</select><br />
+
+<label>定期自动校准:</label>
+<select id="calibration" name="calibration" class="boxselect">
+               <option value="0">关闭</option>
+               <option value="1">每天</option>
+               <option value="3">每3天</option>
+               <option value="7">每周</option>
+</select><br />
+<input type="submit" id="settotal"  value="设置" class="btnLogin"/>
+</form>
+</div>
+<h1>系统设置</h1>
+<h3>更改管理员密码</h3>
+<form  class="box" method="POST" action="/changepwd" name="forms2" enctype="text/plain" onsubmit="return toVaildPwd()">
+<label>管理员:</label>
+<input type="text" name="username"  id="username" value="$admin$"/>
+<br />
+<label>旧密码: </label>
+<input type="password" name="oldpwd"  id="oldpwd" />
+<br />
+<label>新密码:</label>
+<input type="password" name="newpwd"  id="newpwd" />
+<br />
+
+<input type="submit" id="changepwd"  value="更改" class="btnLogin"/>
+</form>
+<div/>
+
+<h3>设备信息</h3>
+<div class="box">
+<span  class="versionname"><span class="versionlabel">当前版本：</span>$curversion$</span >
+<span  class="versionname"><span class="versionlabel">IMEI/MEID：</span>$deivceid$</span >
+<span  class="versionname"><span class="versionlabel">SIM卡号：</span>$phonenumber$</span >
+</div>
+
+<h3>系统升级</h3>
+<div class="box">
+<label>$fotadesc$</label><br/>
+$fotaversion$
+</div>
+</body>
+<script language="JavaScript"> 
+window.onload = setSelectChecked("$security$","$language$","$limit$","$max$","$calibration$");
+</script> 
+</html>
+
+
