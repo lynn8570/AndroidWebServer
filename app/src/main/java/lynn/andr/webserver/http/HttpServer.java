@@ -29,37 +29,19 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import lynn.andr.webserver.SocketService;
+import lynn.andr.webserver.http.handler.AssetsHandler;
+import lynn.andr.webserver.http.handler.JSONHandler;
+import lynn.andr.webserver.http.handler.RestrictRequestHandler;
+import lynn.andr.webserver.http.handler.UnRestricRequestHandler;
 import lynn.andr.webserver.util.Log;
 import lynn.andr.webserver.util.NetUtil;
 
 public class HttpServer {
 
     private static final String TAG = "HttpServer";
-    /**
-     * target url that need user login
-     */
-    public static final ArrayList<String> restrictTarget = new ArrayList<>();
-    public static final ArrayList<String> unRestrictTarget = new ArrayList<>();
-    static {
 
-        restrictTarget.add("/submit");
-        restrictTarget.add("/changepwd");
-        restrictTarget.add("/settotal");
-        restrictTarget.add("/block");
-        restrictTarget.add("/unblock");
-
-
-        unRestrictTarget.add("/");
-        unRestrictTarget.add("/login");
-        unRestrictTarget.add("/submit");
-        unRestrictTarget.add("/logout");
-        unRestrictTarget.add("/lang");
-        unRestrictTarget.add("/logout");
-        unRestrictTarget.add("/chgmax");
-    }
 
     public void startServer(int port, Context context, SocketService.OnHttpServerStartListener listener) throws Exception {
         Thread t = new RequestListenerThread(port, context, listener);
@@ -86,10 +68,6 @@ public class HttpServer {
                             new ResponseServer(), new ResponseContent(),
                             new ResponseConnControl()});
 
-            // HttpProcessor httpproc = HttpProcessorBuilder.create()
-            // .add(new RequestContent()).add(new RequestTargetHost())
-            // .add(new RequestConnControl()).add(new RequestUserAgent())
-            // .add(new RequestExpectContinue(true)).build();
 
             this.params = new BasicHttpParams();
             this.params
@@ -104,45 +82,19 @@ public class HttpServer {
 
             HttpRequestHandlerRegistry reqistry = new HttpRequestHandlerRegistry();
 
-            //all target register to WebServiceHandler
-            WebServiceHandler webServiceHandler = new WebServiceHandler(context);
-            for(int i=0;i<unRestrictTarget.size();i++){
-                reqistry.register(unRestrictTarget.get(i),webServiceHandler);
-            }
-            for(int i=0;i<restrictTarget.size();i++){
-                reqistry.register(restrictTarget.get(i),webServiceHandler);
-            }
+            //all target register to RestrictRequestHandler
+            new RestrictRequestHandler(context, reqistry);
+            new UnRestricRequestHandler(context, reqistry);
+            new JSONHandler(context, reqistry);
+            new AssetsHandler(context, reqistry);
 
-
-            JSONHandler jsonHandler = new JSONHandler(context);
-//            reqistry.register("/login", loginHandler);
-//            reqistry.register("/login.json", loginHandler);
-//            reqistry.register("/submit", submitHandler);
-//            reqistry.register("/changepwd", changePwdHandler);
-//            reqistry.register("/changepwd.json", changePwdHandler);
-//            reqistry.register("/settotal", setTotalHandler);
-//            reqistry.register("/block", blockMacHandler);
-//            reqistry.register("/unblock", blockMacHandler);
-//
-//            MifiPushTest mifipushtest = new MifiPushTest(context);
-//            reqistry.register("/live/*", mifipushtest);
-
-            reqistry.register("/json/*", jsonHandler);
-            reqistry.register("*" + ".json", jsonHandler);
-
-            //all .html、images，css,js  register to AssetsHandler
-            AssetsHandler assetsHandler = new AssetsHandler(context);
-            reqistry.register("*" + ".html", assetsHandler);
-            reqistry.register("/images/*", assetsHandler);
-            reqistry.register("/css/*", assetsHandler);
-            reqistry.register("/js/*", assetsHandler);
 
             this.httpService = new HttpService(httpproc,
                     new DefaultConnectionReuseStrategy(),
                     new DefaultHttpResponseFactory());
             httpService.setParams(this.params);
             httpService.setHandlerResolver(reqistry);
-            Log.i(TAG, "WebServiceHandler handle set params=" + params);
+            Log.i(TAG, "RestrictRequestHandler handle set params=" + params);
         }
 
         @Override

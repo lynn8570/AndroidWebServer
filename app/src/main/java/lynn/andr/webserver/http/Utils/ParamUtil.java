@@ -23,6 +23,22 @@ public class ParamUtil {
     public static final String TAG = "ParamUtil";
 
     /**
+     * http://ip:port +target+？
+     *
+     * @param request
+     * @return 截取 请求中的 /xxxx ,除去问号之后带的参数等
+     */
+    public static String parseTarget(HttpRequest request) {
+        String target = request.getRequestLine().getUri();
+        Log.i(TAG, "request uri =" + target);
+        if (target.contains("?")) {
+            int indexOf = target.indexOf("?");
+            target = target.substring(0, indexOf);
+        }
+        Log.i(TAG, "extract target=" + target);
+        return target;
+    }
+    /**
      * 从get请求中获取 key-value 键值对参数
      *
      * @param uri

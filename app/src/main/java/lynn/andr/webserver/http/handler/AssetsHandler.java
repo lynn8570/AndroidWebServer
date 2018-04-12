@@ -1,4 +1,4 @@
-package lynn.andr.webserver.http;
+package lynn.andr.webserver.http.handler;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -8,12 +8,10 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.protocol.HttpContext;
-import org.apache.http.protocol.HttpRequestHandler;
+import org.apache.http.protocol.HttpRequestHandlerRegistry;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import lynn.andr.webserver.util.Log;
 
 /**
  * handle css,image,js res
@@ -27,9 +25,17 @@ public class AssetsHandler extends RequestHandler {
     private static final String CSS = "css";
     private String assetFilename;
 
-    public AssetsHandler(Context context) {
-        super(context);
+    public AssetsHandler(Context context, HttpRequestHandlerRegistry registry) {
+        super(context, registry);
+    }
 
+
+    @Override
+    public void initTargetList() {
+        targetsList.add("*" + ".html");
+        targetsList.add("/images/*");
+        targetsList.add("/css/*");
+        targetsList.add("/js/*");
     }
 
     @Override
@@ -64,7 +70,7 @@ public class AssetsHandler extends RequestHandler {
             int start = url.indexOf(CSS);
             int end = url.indexOf(".css");
             return url.substring(start, end + 4);
-        }else if (url.contains(".html")){
+        } else if (url.contains(".html")) {
             int start = url.lastIndexOf("\\");
             return url.substring(start);
         }

@@ -41,8 +41,8 @@ import lynn.andr.webserver.util.SettingUtil;
 
 
 public class PageEntity {
-    private static final String TEMPLATE_RESULT = "result.html";
-    private static final String TEMPLATE_SUCCESS = "success.html";
+
+
     private static final String KEY_MESSAGE = "$message$";
     private static final String KEY_SUMMARY = "$summary$";
     private static final String KEY_HOMEPAGE = "$homepage$";
@@ -176,7 +176,7 @@ public class PageEntity {
         HashMap<String, String> table = new HashMap<String, String>();
         table.put(KEY_MESSAGE, msg);
         table.put(KEY_HOMEPAGE, mContext.getString(R.string.back_to_homepage));
-        return generateHttpEntity(TEMPLATE_RESULT, table);
+        return generateHttpEntity("result.html", table);
     }
 
     public BasicHttpEntity getSuccessPage(String ssid, String pwd)
@@ -188,7 +188,7 @@ public class PageEntity {
         table.put(KEY_MESSAGE, format);
         table.put(KEY_SUMMARY, mContext.getString(R.string.summary));
         table.put(KEY_HOMEPAGE, mContext.getString(R.string.back_to_homepage));
-        return generateHttpEntity(TEMPLATE_RESULT, table);
+        return generateHttpEntity("success.html", table);
 
     }
 
