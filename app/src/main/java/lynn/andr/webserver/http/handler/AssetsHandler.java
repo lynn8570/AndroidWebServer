@@ -32,10 +32,15 @@ public class AssetsHandler extends RequestHandler {
 
     @Override
     public void initTargetList() {
-        targetsList.add("*" + ".html");
-        targetsList.add("/images/*");
-        targetsList.add("/css/*");
-        targetsList.add("/js/*");
+        //targetsList.add("*" + ".html");
+        mTargetsList.add("/images/*");
+        mTargetsList.add("/css/*");
+        mTargetsList.add("/js/*");
+    }
+
+    @Override
+    public void initTargetMap() {
+
     }
 
     @Override
@@ -70,9 +75,6 @@ public class AssetsHandler extends RequestHandler {
             int start = url.indexOf(CSS);
             int end = url.indexOf(".css");
             return url.substring(start, end + 4);
-        } else if (url.contains(".html")) {
-            int start = url.lastIndexOf("\\");
-            return url.substring(start);
         }
         return null;
     }

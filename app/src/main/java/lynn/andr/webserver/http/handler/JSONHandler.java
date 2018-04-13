@@ -2,6 +2,7 @@ package lynn.andr.webserver.http.handler;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
@@ -13,8 +14,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiConfiguration;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 
 import lynn.andr.webserver.R;
@@ -22,13 +26,17 @@ import lynn.andr.webserver.fota.Constant;
 import lynn.andr.webserver.fota.ErrorCode;
 import lynn.andr.webserver.http.JSONEntity;
 import lynn.andr.webserver.http.Utils.ParamUtil;
+import lynn.andr.webserver.http.Utils.ResponseWapper;
 import lynn.andr.webserver.http.bean.AndroidAp;
 import lynn.andr.webserver.http.bean.DataUsage;;
+import lynn.andr.webserver.http.biz.BizExecutor;
 import lynn.andr.webserver.http.biz.BlockMacExecutor;
+import lynn.andr.webserver.http.biz.LoginExecutor;
 import lynn.andr.webserver.util.Log;
 import lynn.andr.webserver.util.SettingUtil;
 
 import static lynn.andr.webserver.http.Utils.ParamUtil.parseTarget;
+import static lynn.andr.webserver.http.biz.LoginExecutor.CHECK_USER_OK;
 
 public class JSONHandler extends RequestHandler {
 
@@ -59,8 +67,31 @@ public class JSONHandler extends RequestHandler {
 
     @Override
     public void initTargetList() {
-        targetsList.add("/json/*");
-        targetsList.add("*" + ".json");
+        mTargetsList.add("/json/*");
+        mTargetsList.add("*" + ".json");
+    }
+
+    @Override
+    public void initTargetMap() {
+//        private static final String URI_LOGIN = "/login";
+//        private static final String URI_HOTSPOT = "/hotspot";
+//        private static final String URI_CONNECTIONS = "/connections";
+//        private static final String URI_BLACKLIST = "/blacklist";
+//        private static final String URI_DATA = "/data";
+//        private static final String URI_IMEI = "/imei";
+//
+//        private static final String URI_BLOCK = "/block";
+//        private static final String URI_UNBLOCK = "/unblock";
+//        private static final String URI_SET_AP = "/setap";
+//        private static final String URI_SET_TOKEN = "/settoken";
+//        private static final String URI_GET_TOKEN = "/token";
+//        private static final String URI_UPDATE_LEHOST = "/setlehost";
+//        private static final String URI_GET_LEHOST = "/lehost";
+//        private static final String URI_GET_VERSION = "/version";
+//        private static final String KEY_LE_TOKEN = "token";
+//        private static final String KEY_LE_HOST = "lehost";
+//        private static final String KEY_VERSION = "version";
+        mTargetExecutorMap.put("/login",LoginExecutor.class);
     }
 
     @Override
@@ -71,56 +102,65 @@ public class JSONHandler extends RequestHandler {
         //
         // if (checkUser == CHECK_USER_OK) {
 
+        //业务分配，通过target找到合适的业务执行者
         String target = extractTargetFromDotJSON(parseTarget(request));
-        Log.i(TAG, "JSONHandler.handle target=" + target);
-        switch (target) {
-            case URI_LOGIN:
-
-                break;
-            case URI_HOTSPOT:
-                handleHotspot(request, response);
-                break;
-            case URI_SET_AP:
-                handleSetupAp(request, response);
-                break;
-            case URI_CONNECTIONS:
-                handleConnection(request, response);
-                break;
-            case URI_DATA:
-                handleDataUsage(request, response);
-                break;
-            case URI_IMEI:
-                handleIMEI(request, response);
-                break;
-
-            case URI_BLOCK:
-                handleBlock(request, response, true);
-                break;
-            case URI_UNBLOCK:
-                handleBlock(request, response, false);
-                break;
-            case URI_BLACKLIST:
-                handleBlackList(request, response);
-                break;
-            case URI_SET_TOKEN:
-                handleToken(request, response, false);
-                break;
-            case URI_GET_TOKEN:
-                handleToken(request, response, true);
-                break;
-            case URI_UPDATE_LEHOST:
-                handleLeHost(request, response, false);
-                break;
-            case URI_GET_LEHOST:
-                handleLeHost(request, response, true);
-                break;
-
-            case URI_GET_VERSION:
-                handVersion(request, response);
-                break;
-            default:
-                break;
+        BizExecutor bizExecutor = getBizExecutor(target, BizExecutor.RETURN_TYPE_JSON);
+        if (bizExecutor != null) {
+            bizExecutor.handle(request, response);
+            return;
         }
+
+
+//        Log.i(TAG, "JSONHandler.handle target=" + target);
+//        switch (target) {
+//            case URI_LOGIN:
+//
+//                handlelogin(request,response);
+//                break;
+//            case URI_HOTSPOT:
+//                handleHotspot(request, response);
+//                break;
+//            case URI_SET_AP:
+//                handleSetupAp(request, response);
+//                break;
+//            case URI_CONNECTIONS:
+//                handleConnection(request, response);
+//                break;
+//            case URI_DATA:
+//                handleDataUsage(request, response);
+//                break;
+//            case URI_IMEI:
+//                handleIMEI(request, response);
+//                break;
+//
+//            case URI_BLOCK:
+//                handleBlock(request, response, true);
+//                break;
+//            case URI_UNBLOCK:
+//                handleBlock(request, response, false);
+//                break;
+//            case URI_BLACKLIST:
+//                handleBlackList(request, response);
+//                break;
+//            case URI_SET_TOKEN:
+//                handleToken(request, response, false);
+//                break;
+//            case URI_GET_TOKEN:
+//                handleToken(request, response, true);
+//                break;
+//            case URI_UPDATE_LEHOST:
+//                handleLeHost(request, response, false);
+//                break;
+//            case URI_GET_LEHOST:
+//                handleLeHost(request, response, true);
+//                break;
+//
+//            case URI_GET_VERSION:
+//                handVersion(request, response);
+//                break;
+//            default:
+//                break;
+//        }
 
     }
 
@@ -135,6 +175,8 @@ public class JSONHandler extends RequestHandler {
         }
         return result;
     }
+
+
 
     private void handVersion(HttpRequest request, HttpResponse response) {
         if (Constant.version != null && !Constant.version.isEmpty()) {
@@ -232,11 +274,7 @@ public class JSONHandler extends RequestHandler {
         boolean result = false;
 
         String mac = null;
-        try {
-            mac = BlockMacExecutor.getMac(request);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mac = BlockMacExecutor.getMac(request);
         Log.i(TAG, "handleBlock mac=" + mac);
 
         if (mac == null || mac.isEmpty()) {
@@ -284,6 +322,16 @@ public class JSONHandler extends RequestHandler {
 
     private void handleIMEI(HttpRequest request, HttpResponse response) {
         Log.i(TAG, "handleIMEI");
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         String imei = ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE))
                 .getDeviceId();
         if (imei != null && !imei.isEmpty()) {

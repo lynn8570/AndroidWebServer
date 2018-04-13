@@ -27,12 +27,9 @@ public class SetTotalExecutor extends BizExecutor {
     private static final String KEY_CALI = "calibration";
 
 
-    public SetTotalExecutor(Context context) {
-        super(context);
-    }
 
     @Override
-    public void handle(HttpRequest request, HttpResponse response) throws HttpException, IOException {
+    public int doBiz(HttpRequest request) {
 
 //		if(!checkAndUpdateCookie(request, response)){
 //			responeMessage(response, R.string.permission_deny);
@@ -69,18 +66,31 @@ public class SetTotalExecutor extends BizExecutor {
                 SettingUtil.setCali(mContext, integerCali);
             }
 
-            ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.success_setting), response);
-            return;
+            return EXECUTE_RESULT_SUCCESS;
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error_input), response);
-            return;
+            return EXECUTE_RESULT_ERROR;
         } catch (Exception e) {
             e.printStackTrace();
-            ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error), response);
-            return;
+            return EXECUTE_RESULT_BAD_INPUT;
         }
 
+    }
+
+    @Override
+    public void wrapResponseForJSON(HttpResponse response, int result) {
+
+    }
+
+    @Override
+    public void wrapResponseForPAGE(HttpResponse response, int result) throws IOException {
+        if (result == EXECUTE_RESULT_SUCCESS) {
+            ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.success_setting), response);
+        } else if (result == EXECUTE_RESULT_ERROR) {
+            ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error_input), response);
+        } else if (result == EXECUTE_RESULT_BAD_INPUT) {
+            ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error), response);
+        }
     }
 
 

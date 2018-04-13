@@ -1,6 +1,7 @@
 package lynn.andr.webserver.http.biz;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 import org.apache.http.HttpException;
@@ -27,12 +28,11 @@ public class MifiPushTest extends BizExecutor {
     String param_toekn = "access_token";
     String param_imei = "imei";
 
-    public MifiPushTest(Context context) {
-        super(context);
-    }
+
+    private JSONObject jsonObject;
 
     @Override
-    public void handle(HttpRequest request, HttpResponse response) throws HttpException, IOException {
+    public int doBiz(HttpRequest request) {
 
         String target = ParamUtil.parseTarget(request);
         Log.i(TAG, "MifiPushTest target=" + target);
@@ -42,7 +42,7 @@ public class MifiPushTest extends BizExecutor {
         String imei = parseParameter.get(param_imei);
         Log.i(TAG, "MifiPushTest token=" + token);
         Log.i(TAG, "MifiPushTest imei=" + imei);
-        JSONObject jsonObject = new JSONObject();
+        jsonObject = new JSONObject();
 
         JSONObject meta = new JSONObject();
         try {
@@ -59,14 +59,35 @@ public class MifiPushTest extends BizExecutor {
                         .put("data", getRtmpdata());
             }
 
-            ResponseWapper.wapper(new StringEntity(jsonObject.toString()), response);
-            return;
+            return EXECUTE_RESULT_SUCCESS;
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error), response);
+        return EXECUTE_RESULT_ERROR;
 
+    }
+
+    @Override
+    public void wrapResponseForJSON(HttpResponse response, int result) throws UnsupportedEncodingException {
+        if (result == EXECUTE_RESULT_SUCCESS) {
+            ResponseWapper.wapper(new StringEntity(jsonObject.toString()), response);
+        }
+
+    }
+
+    @Override
+    public void wrapResponseForPAGE(HttpResponse response, int result) throws IOException {
+
+        if (result == EXECUTE_RESULT_SUCCESS) {
+
+            //todo
+
+        } else if (result == EXECUTE_RESULT_ERROR) {
+
+            ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error), response);
+
+        }
     }
 
     private int getRtmpdata() {

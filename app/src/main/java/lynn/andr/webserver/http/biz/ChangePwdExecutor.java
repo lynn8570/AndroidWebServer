@@ -28,17 +28,10 @@ public class ChangePwdExecutor extends BizExecutor {
     private static final String KEY_NEW_PWD = "newpwd";
     private static final String KEY_NEW_USERNAME = "username";
 
-    public ChangePwdExecutor(Context context) {
-        super(context);
-    }
 
     @Override
-    public void handle(HttpRequest request, HttpResponse response) throws HttpException, IOException {
-//
-//		if(!checkAndUpdateCookie(request, response)){
-//			responeMessage(response, R.string.permission_deny);
-//			return;
-//		}
+    public int doBiz(HttpRequest request) {
+
         Map<String, String> parameter = ParamUtil.parseParameter(request);
         String newPwd = parameter.get(KEY_NEW_PWD);
         String oldPwd = parameter.get(KEY_OLD_PWD);
@@ -54,17 +47,32 @@ public class ChangePwdExecutor extends BizExecutor {
                     && username != null && !username.isEmpty()) {
                 SettingUtil.setAdmin(mContext, newPwd, username);
 
-                ResponseWapper.wapper(false, new PageEntity(mContext).getMessagePage(R.string.modify_pwd_success), response);
+                return EXECUTE_RESULT_SUCCESS;
             } else {
-//				responeMessage(response, R.string.error_input);
-                //responeChangePwd(request,response,true,R.string.error_input,ErrorCode.ERROR_PARAM);
-                ResponseWapper.wapper(false, new PageEntity(mContext).getMessagePage(R.string.error_pwd), response);
+                return EXECUTE_RESULT_BAD_INPUT;
             }
 
         } else {
             //responeMessage(response, R.string.error_pwd);
             //responeChangePwd(request,response,false,R.string.error_pwd,ErrorCode.ERROR_CODE_NULL);
-            ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error_pwd), response);
+            return EXECUTE_RESULT_BAD_INPUT;
+        }
+
+
+    }
+
+
+    @Override
+    public void wrapResponseForJSON(HttpResponse response, int result) {
+
+    }
+
+    @Override
+    public void wrapResponseForPAGE(HttpResponse response, int result) throws IOException {
+        if (result == EXECUTE_RESULT_SUCCESS) {
+            ResponseWapper.wapper(false, new PageEntity(mContext).getMessagePage(R.string.modify_pwd_success), response);
+        } else if (result == EXECUTE_RESULT_BAD_INPUT) {
+            ResponseWapper.wapper(false, new PageEntity(mContext).getMessagePage(R.string.error_pwd), response);
         }
 
 

@@ -22,33 +22,39 @@ import lynn.andr.webserver.util.Log;
 public class SubmitExecutor extends BizExecutor {
 
     private static final String TAG = "SubmitExecutor";
+
     // security=2, password=12345678, SSID=AndroidAP
 
 
-    public SubmitExecutor(Context context) {
-        super(context);
-    }
-
+    private  WifiConfiguration config;
     @Override
-    public void handle(HttpRequest request, HttpResponse response) throws HttpException, IOException {
-//        super.handle(request, response, context);
+    public int doBiz(HttpRequest request) {
 
-//		if (!checkAndUpdateCookie(request, response)) {
-//			responeMessage(response, R.string.permission_deny);
-//			responeMessage(response, R.string.error);
-//			return;
-//		}
-        final WifiConfiguration config = getConfig(request);
+       config = getConfig(request);
         Log.i(TAG, "config=" + config);
         if (config != null) {
 
 //			NetUtil.startSetWifi(mContext,config); to set ap settings
+            return EXECUTE_RESULT_SUCCESS;
 
-            ResponseWapper.wapper(false, new PageEntity(mContext).getSuccessPage(config.SSID, config.preSharedKey), response);
         } else {
-            ResponseWapper.wapper(false, new PageEntity(mContext).getMessagePage(R.string.error), response);
+            return EXECUTE_RESULT_ERROR;
         }
 
+    }
+
+    @Override
+    public void wrapResponseForJSON(HttpResponse response, int result) {
+
+    }
+
+    @Override
+    public void wrapResponseForPAGE(HttpResponse response, int result) throws IOException {
+        if (result == EXECUTE_RESULT_SUCCESS) {
+            ResponseWapper.wapper(false, new PageEntity(mContext).getSuccessPage(config.SSID, config.preSharedKey), response);
+        } else if (result == EXECUTE_RESULT_ERROR) {
+            ResponseWapper.wapper(false, new PageEntity(mContext).getMessagePage(R.string.error), response);
+        }
     }
 
 

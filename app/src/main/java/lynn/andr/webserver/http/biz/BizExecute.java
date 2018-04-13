@@ -13,6 +13,9 @@ import java.io.IOException;
 
 public interface BizExecute{
 
-    void handle(HttpRequest request, HttpResponse response) throws HttpException, IOException;
+    int doBiz(HttpRequest request);
 
+
+    void wrapResponseForJSON(HttpResponse response,int result)throws HttpException, IOException;
+    void wrapResponseForPAGE(HttpResponse response,int result)throws HttpException, IOException;
 }

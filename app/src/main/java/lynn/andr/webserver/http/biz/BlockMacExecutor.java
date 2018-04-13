@@ -28,25 +28,16 @@ public class BlockMacExecutor extends BizExecutor {
     private static final String TAG_UNBLOCK = "/unblock";
     public static final String KEY_MAC = "macaddress";
 
-    public BlockMacExecutor(Context context) {
-        super(context);
-    }
+
 
     @Override
-    public void handle(HttpRequest request, HttpResponse response) throws HttpException, IOException {
-//
-//		if (!checkAndUpdateCookie(request, response)) {
-////			responeMessage(response, R.string.permission_deny);
-//			responeLogin(response);
-//			return;
-//		}
+    public int doBiz(HttpRequest request)  {
 
         String target = request.getRequestLine().getUri();
         String mac = getMac(request);
 
         if (target == null || target.isEmpty() || mac == null || mac.isEmpty()) {
-            ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error), response);
-            return;
+            return EXECUTE_RESULT_BAD_INPUT;
         }
         boolean result = false;
         if (target.startsWith(TAG_BLOCK)) {
@@ -58,16 +49,37 @@ public class BlockMacExecutor extends BizExecutor {
 
         if (result) {
 
+            return EXECUTE_RESULT_SUCCESS;
+
+        } else {
+            return EXECUTE_RESULT_ERROR;
+        }
+
+    }
+
+    @Override
+    public void wrapResponseForJSON(HttpResponse response, int result) {
+
+    }
+
+    @Override
+    public void wrapResponseForPAGE(HttpResponse response, int result) throws IOException {
+        if (result == EXECUTE_RESULT_BAD_INPUT) {
+            ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error), response);
+            return;
+        }
+
+        if (result == EXECUTE_RESULT_SUCCESS) {
+
             ResponseWapper.wapper(new PageEntity(mContext).getIndexPage(), response);
 
         } else {
             ResponseWapper.wapper(new PageEntity(mContext).getMessagePage(R.string.error), response);
             return;
         }
-
     }
 
-    public static String getMac(HttpRequest request) throws IOException {
+    public static String getMac(HttpRequest request){
         Map<String, String> parameter = ParamUtil.parseParameter(request);
         Log.i(TAG, " parameter=" + parameter);
         if (parameter == null) {

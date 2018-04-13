@@ -3,6 +3,7 @@ package lynn.andr.webserver.http.handler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.Executor;
 
 import org.apache.http.Header;
 import org.apache.http.HttpException;
@@ -16,10 +17,14 @@ import android.text.TextUtils;
 
 import lynn.andr.webserver.R;
 import lynn.andr.webserver.http.PageEntity;
+import lynn.andr.webserver.http.Utils.ParamUtil;
 import lynn.andr.webserver.http.Utils.ResponseWapper;
+import lynn.andr.webserver.http.biz.BizExecutor;
 import lynn.andr.webserver.http.handler.RequestHandler;
 import lynn.andr.webserver.util.Log;
 import lynn.andr.webserver.util.SettingUtil;
+
+import static lynn.andr.webserver.http.biz.BizExecutor.RETURN_TYPE_PAGE;
 
 
 /**
@@ -35,12 +40,18 @@ public class RestrictRequestHandler extends RequestHandler {
 
     @Override
     public void initTargetList() {
-        targetsList.add("/submit");
-        targetsList.add("/changepwd");
-        targetsList.add("/settotal");
-        targetsList.add("/block");
-        targetsList.add("/unblock");
-        targetsList.add("/chgmax");
+        mTargetsList.add("/submit");
+        mTargetsList.add("/changepwd");
+        mTargetsList.add("/settotal");
+        mTargetsList.add("/block");
+        mTargetsList.add("/unblock");
+        mTargetsList.add("/chgmax");
+        mTargetsList.add("/index.html");
+    }
+
+    @Override
+    public void initTargetMap() {
+
     }
 
     @Override
@@ -48,14 +59,22 @@ public class RestrictRequestHandler extends RequestHandler {
                        HttpContext context) throws HttpException, IOException {
 
         boolean isLogin = checkUserIdCookie(request);
-        if(!isLogin){
+        if (!isLogin) {
             ResponseWapper.wapper(false, new PageEntity(mContext).getMessagePage(R.string.permission_deny), response);
             return;
         }
 
-        //业务分配
+        //业务分配，通过target找到合适的业务执行者
+        String target = ParamUtil.parseTarget(request);
+        BizExecutor bizExecutor = getBizExecutor(target, BizExecutor.RETURN_TYPE_PAGE);
+        if (bizExecutor != null) {
+            bizExecutor.handle(request, response);
+            return;
+        }
 
 
+        //default return index page
+        ResponseWapper.wapper(true, new PageEntity(mContext).getIndexPage(), response);
     }
 
     /**

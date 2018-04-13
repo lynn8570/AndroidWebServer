@@ -34,12 +34,14 @@ public class UnRestricRequestHandler extends RequestHandler {
 
     @Override
     public void initTargetList() {
-        targetsList.add("/");
-        targetsList.add("/login");
-        targetsList.add("/submit");
-        targetsList.add("/logout");
-        targetsList.add("/lang");
-        targetsList.add("/logout");
+        mTargetsList.add("/");
+        mTargetsList.add("/logout");
+        mTargetsList.add("/lang");
+
+    }
+
+    @Override
+    public void initTargetMap() {
 
     }
 
@@ -81,25 +83,7 @@ public class UnRestricRequestHandler extends RequestHandler {
         }
     }
 
-    private boolean requestMatch(HttpRequest request, String match) {
-        String target = request.getRequestLine().getUri();
-        if (TextUtils.isEmpty(target) || TextUtils.isEmpty(match)) {
-            return false;
-        }
-        if (target.contains(match)) {
-            return true;
-        }
-        return false;
-    }
 
-    private boolean isUpdateWare(HttpRequest request) {
-        return requestMatch(request, "updateWare");
-    }
-
-    private boolean isChgMax(HttpRequest request) {
-
-        return requestMatch(request, "chgmax");
-    }
 
     private boolean isChgLang(HttpRequest request) {
 

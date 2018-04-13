@@ -13,11 +13,48 @@ import java.io.IOException;
  */
 
 public abstract class BizExecutor implements BizExecute {
-    protected Context mContext;
+    public static final int RETURN_TYPE_PAGE = 1;
+    public static final int RETURN_TYPE_JSON = 2;
 
-    public BizExecutor(Context context) {
-        this.mContext = context;
+
+
+    public static final int EXECUTE_RESULT_SUCCESS = 10;
+    public static final int EXECUTE_RESULT_ERROR= 12;
+    public static final int EXECUTE_RESULT_BAD_INPUT= 13;
+
+    protected Context mContext;
+    protected int responseType;
+
+    public Context getmContext() {
+        return mContext;
     }
+
+    public void setmContext(Context mContext) {
+        this.mContext = mContext;
+    }
+
+    public int getResponseType() {
+        return responseType;
+    }
+
+    public void setResponseType(int responseType) {
+        this.responseType = responseType;
+    }
+
+
+
+    public void handle(HttpRequest request, HttpResponse response) throws HttpException, IOException {
+
+        int result = doBiz(request);
+        if (responseType == RETURN_TYPE_JSON){
+            wrapResponseForJSON(response,result);
+        }else if (responseType == RETURN_TYPE_JSON){
+            wrapResponseForPAGE(response,result);
+        }
+
+    }
+
+
 
 
 }
